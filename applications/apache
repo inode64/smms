@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+apache_exists() {
+	test -x "$(WHICH apache2)"
+}
+
+apache_list() {
+	echo "apache2"
+}
+
+apache_name() {
+	test "$1" == "apache" || test "$1" == "apache2"
+}
+
+apache_desc() {
+	echo "The Apache Web Server"
+}
+
+apache_version() {
+	WHICH "$1" -V
+}
+
+apache_status() {
+	apache_version "$1" &>/dev/null
+}

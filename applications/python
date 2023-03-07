@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+python_exists() {
+	test -x "$(WHICH "$1")"
+}
+
+python_list() {
+	local PYTHON
+
+	for PYTHON in python2 python2.7 python3 python3.{4..13}; do
+		test ! -x "$(WHICH "$PYTHON")" || echo $PYTHON
+	done
+}
+
+python_name() {
+	echo "$1" | grep -qe "^python\([1-9]\)\?\(\.[0-9]*\)\?$"
+}
+
+python_desc() {
+	echo "Python language"
+}
+
+python_version() {
+	$(WHICH "$1") --version
+}
+
+python_status() {
+	python_version "$1" &>/dev/null
+}
