@@ -8,7 +8,7 @@ python_list() {
 	local PYTHON
 
 	for PYTHON in python2 python2.7 python3 python3.{4..13}; do
-		test ! -x "$(WHICH "$PYTHON")" || echo $PYTHON
+		test ! -x "$(WHICH "$PYTHON")" || echo "$PYTHON"
 	done
 }
 
@@ -21,7 +21,7 @@ python_desc() {
 }
 
 python_version() {
-	echo $(applications_version "$1")
+	echo "$(applications_version "$1")"
 }
 
 python_status() {
