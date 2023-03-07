@@ -3,17 +3,21 @@ set -e
 
 source "${SMMS_ROOT}/lib/smms/common.bash"
 source "${SMMS_ROOT}/lib/smms/applications.bash"
+source "${SMMS_ROOT}/lib/smms/services.bash"
 
-check_applicacions() {
-	local app
+start_services() {
+	local service s
 
-	for app in "${SMMS_APLICATIONS[@]}"; do
-		for list in $(${app}_list); do
-			echo -n "$(${app}_name) | ${list} | $(${app}_version "${list}") | status "
-			if $(${app}_status "${list}"); then
-				echo "ok"
-			else
-				echo "fail"
+	for s in "${start[@]}"; do
+		for service in "${SMMS_SERVICES[@]}"; do
+			if $(${service}_service_cmd "${s}"); then
+				echo "$s existe"
+				if $(${service}_service_exists "${s}"); then
+					echo "$s activo"
+					if $(${service}_service_status "${s}"); then
+						echo "$s correcto"
+					fi
+				fi
 			fi
 		done
 	done
@@ -26,9 +30,60 @@ opt_parse() {
 	while [ "${#}" -gt '0' ]; do
 		case "${1?}" in
 		# Short options that accept a value need a "*" in their pattern because they can be found in the "-A<value>" form.
-		'check_applications' | 'check_app')
-			applications="true"
-			break
+		'start')
+			if [ "${#}" -eq '1' ]; then
+				optDie "No services to start"
+			fi
+			shift
+			while [ "${#}" -gt '0' ]; do
+				start+=("${1?}")
+				shift
+			done
+			return
+			;;
+		'stop')
+			if [ "${#}" -eq '1' ]; then
+				optDie "No services to stop"
+			fi
+			shift
+			while [ "${#}" -gt '0' ]; do
+				stop+=("${1?}")
+				shift
+			done
+			return
+			;;
+		'reload')
+			if [ "${#}" -eq '1' ]; then
+				optDie "No services to reload"
+			fi
+			shift
+			while [ "${#}" -gt '0' ]; do
+				reload+=("${1?}")
+				shift
+			done
+			return
+			;;
+		'restart')
+			if [ "${#}" -eq '1' ]; then
+				optDie "No services to restart"
+			fi
+			shift
+			while [ "${#}" -gt '0' ]; do
+				restart+=("${1?}")
+				shift
+			done
+			return
+			;;
+		'check')
+			if [ "${#}" -eq '1' ]; then
+				optDie "No services to check"
+			fi
+			shift
+			while [ "${#}" -gt '0' ]; do
+				check+=("${1?}")
+				shift
+			done
+			return
 			;;
 		'-q' | '--quiet' | '--no-quiet')
 			optArgBool "${@-}"
@@ -139,6 +194,12 @@ show_version() {
 }
 
 main() {
+	start=()
+	stop=()
+	reload=()
+	restart=()
+	check=()
+
 	applications="false"
 	debug="false"
 	quiet="false"
@@ -172,8 +233,8 @@ main() {
 		NO_STDOUT='true'
 	fi
 
-	if [ "${applications:?}" = "true" ]; then
-		check_applicacions
+	if [ "${start}" ]; then
+		start_services
 	fi
 }
 

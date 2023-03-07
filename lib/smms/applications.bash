@@ -21,3 +21,5 @@ for app in ${SMMS_ROOT}/libexec/smms/applications/*; do
 	SMMS_APLICATIONS+=( "$(basename "${app}")" )
 	source "${app}"
 done
+
+unset app

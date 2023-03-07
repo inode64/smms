@@ -2,8 +2,8 @@
 
 export SMMS_VERSION='0.1.0'
 
-SMMS_INIT_SYSTEMD="systemd"
-SMMS_INIT_OPENRC="openrc"
+export SMMS_INIT_SYSTEMD="systemd"
+export SMMS_INIT_OPENRC="openrc"
 
 SMMS_OS_ALPINE="alpine"
 SMMS_OS_ARCH="arch"
@@ -127,4 +127,8 @@ print_list() { [ -n "${NO_STDOUT+x}" ] || printf "${COLOR_RESET-} ${COLOR_BCYAN-
 Fatal() {
 	print_error "$*"
 	exit 1
+}
+
+getVersion() {
+	echo "$1" | grep -o "\([1-9]\)\?\(\.[0-9]*\)\?\(\.[0-9]*\)\?$"
 }

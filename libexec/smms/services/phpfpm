@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+PHPFPM_SERVICE_LIST=()
+case "$(InitSystem)" in
+"${SMMS_INIT_OPENRC}")
+	for PHP in php5.{0..6} php7.{0..4} php8.{0..4}; do
+		test -x /etc/init.d/"${PHP}" && PHPFPM_SERVICE_LIST=("${PHP}")
+	done
+	;;
+"${SMMS_INIT_SYSTEMD}")
+	for PHP in php-fpm@5.{0..6} php-fpm@7.{0..4} php-fpm@8.{0..4}; do
+		test -e /lib/systemd/system/"${PHP}" && PHPFPM_SERVICE_LIST=("${PHP}")
+	done
+	;;
+esac
+
+phpfpm_service_name() {
+	echo "The PHP FastCGI Process Manager"
+}
+
+phpfpm_service_info() {
+	echo "$(applications_version "php-fpm$(version "$1")")"
+}
+
+phpfpm_service_status() {
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		/etc/init.d/${1} configtest && return
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		php-fpm$(version "$1") -t /etc/php/fpm-php$(version "$1")/php-fpm.conf -t && return
+		;;
+	esac
+
+	return 1
+}
