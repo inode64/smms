@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+fcron_exists() {
+	test -x "$(WHICH fcron)"
+}
+
+fcron_list() {
+	fcron_exists && echo "fcron"
+}
+
+fcron_cmd() {
+	test "$1" == "fcron"
+}
+
+fcron_name() {
+	echo "Fcron"
+}
+
+fcron_version() {
+	echo "$(applications_version "$1")"
+}
+
+fcron_status() {
+	applications_version "$1" &>/dev/null
+}

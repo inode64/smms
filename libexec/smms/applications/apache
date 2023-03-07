@@ -5,14 +5,14 @@ apache_exists() {
 }
 
 apache_list() {
-	echo "apache2"
+	apache_exists && echo "apache2"
 }
 
-apache_name() {
+apache_cmd() {
 	test "$1" == "apache" || test "$1" == "apache2"
 }
 
-apache_desc() {
+apache_name() {
 	echo "The Apache Web Server"
 }
 

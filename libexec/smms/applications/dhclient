@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+dhclient_exists() {
+	test -x "$(WHICH dhclient)"
+}
+
+dhclient_list() {
+	dhclient_exists && echo "dhclient"
+}
+
+dhclient_cmd() {
+	test "$1" == "dhclient"
+}
+
+dhclient_name() {
+	echo "Client DHCP"
+}
+
+dhclient_version() {
+	echo "$(applications_version "$1")"
+}
+
+dhclient_status() {
+	applications_version "$1" &>/dev/null
+}

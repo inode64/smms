@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+php_exists() {
+	test -x "$(WHICH "$1")"
+}
+
+php_list() {
+	local PHP
+
+	for PHP in php php5 php5.{0..6} php7 php7.{0..4} php8 php8.{0..4}; do
+		test ! -x "$(WHICH "$PHP")" || echo "$PHP"
+	done
+}
+
+php_cmd() {
+	echo "$1" | grep -qe "^php\([5-9]\)\?\(\.[0-9]*\)\?$"
+}
+
+php_name() {
+	echo "PHP language"
+}
+
+php_version() {
+	echo "$(applications_version "$1")"|head -1
+}
+
+php_status() {
+	applications_status "$1"
+}

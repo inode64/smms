@@ -12,11 +12,11 @@ python_list() {
 	done
 }
 
-python_name() {
+python_cmd() {
 	echo "$1" | grep -qe "^python\([1-9]\)\?\(\.[0-9]*\)\?$"
 }
 
-python_desc() {
+python_name() {
 	echo "Python language"
 }
 

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+dbus_exists() {
+	test -x "$(WHICH dbus-daemon)"
+}
+
+dbus_list() {
+	dbus_exists && echo "dbus-daemon"
+}
+
+dbus_cmd() {
+	test "$1" == "dbus-daemon"
+}
+
+dbus_name() {
+	echo "DBUS daemon"
+}
+
+dbus_version() {
+	echo "$(applications_version "$1")"
+}
+
+dbus_status() {
+	applications_version "$1" &>/dev/null
+}
