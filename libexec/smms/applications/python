@@ -21,9 +21,9 @@ python_desc() {
 }
 
 python_version() {
-	$(WHICH "$1") --version
+	echo $(applications_version "$1")
 }
 
 python_status() {
-	python_version "$1" &>/dev/null
+	applications_status "$1"
 }

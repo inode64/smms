@@ -17,9 +17,9 @@ apache_desc() {
 }
 
 apache_version() {
-	WHICH "$1" -V
+	echo "$(applications_vv "$1")" |grep "Server version"|cut -d: -f2
 }
 
 apache_status() {
-	apache_version "$1" &>/dev/null
+	applications_vv "$1" &>/dev/null
 }
