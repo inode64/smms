@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+export SMMS_VERSION='0.1.0'
+
+SMMS_INIT_SYSTEMD="systemd"
+SMMS_INIT_OPENRC="openrc"
+
+SMMS_OS_ALPINE="alpine"
+SMMS_OS_ARCH="arch"
+SMMS_OS_CENTOS="centos"
+SMMS_OS_DEBIAN="debian"
+SMMS_OS_GENTOO="gentoo"
+SMMS_OS_REDHAT="redhat"
+SMMS_OS_SUSE="suse"
+SMMS_OS_UBUNTU="ubuntu"
+
 getDistro() {
 	cat /etc/*-release 2>/dev/null | tr "[:upper:]" "[:lower:]" | grep -Poi '(alpine|arch|centos|debian|gentoo|redhat|suse|ubuntu)' | uniq
 }
@@ -95,12 +109,22 @@ Ncpu() {
 
 InitSystem() {
 	if test -d /run/systemd/system; then
-		echo "systemd"
+		echo ${SMMS_INIT_SYSTEMD}
 	fi
 
 	if test -d /run/openrc; then
-		echo "openrc"
+		echo ${SMMS_INIT_OPENRC}
 	fi
 
 	return
+}
+
+print_info() { [ -n "${NO_STDOUT+x}" ] || printf "${COLOR_RESET-}[${COLOR_BGREEN-}INFO${COLOR_RESET-}] %s\n" "${@-}"; }
+print_warn() { [ -n "${NO_STDERR+x}" ] || printf "${COLOR_RESET-}[${COLOR_BYELLOW-}WARN${COLOR_RESET-}] %s\n" "${@-}" >&2; }
+print_error() { [ -n "${NO_STDERR+x}" ] || printf "${COLOR_RESET-}[${COLOR_BRED-}ERROR${COLOR_RESET-}] %s\n" "${@-}" >&2; }
+print_list() { [ -n "${NO_STDOUT+x}" ] || printf "${COLOR_RESET-} ${COLOR_BCYAN-}*${COLOR_RESET-} %s\n" "${@-}"; }
+
+Fatal() {
+	print_error "$*"
+	exit 1
 }
