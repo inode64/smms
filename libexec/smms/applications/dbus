@@ -12,10 +12,11 @@ dbus_name() {
 	echo "DBUS daemon"
 }
 
-dbus_version() {
-	echo "$(applications_version "$1")"
-}
 
 dbus_status() {
 	applications_version "$1" &>/dev/null
+}
+
+dbus_version() {
+	echo "$(applications_version "$1")"
 }

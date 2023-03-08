@@ -12,10 +12,11 @@ apache_name() {
 	echo "The Apache Web Server"
 }
 
-apache_version() {
-	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2 | xargs
-}
 
 apache_status() {
 	applications_vv "$1" &>/dev/null
+}
+
+apache_version() {
+	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2 | xargs
 }

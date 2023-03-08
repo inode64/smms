@@ -16,10 +16,11 @@ php_name() {
 	echo "PHP language"
 }
 
-php_version() {
-	echo "$(applications_version "$1")" | head -1
-}
 
 php_status() {
 	applications_status "$1"
+}
+
+php_version() {
+	echo "$(applications_version "$1")" | head -1
 }

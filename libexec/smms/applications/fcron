@@ -12,10 +12,11 @@ fcron_name() {
 	echo "Fcron"
 }
 
-fcron_version() {
-	echo "$(applications_version "$1")"
-}
 
 fcron_status() {
 	applications_version "$1" &>/dev/null
+}
+
+fcron_version() {
+	echo "$(applications_version "$1")"
 }

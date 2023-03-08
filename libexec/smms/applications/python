@@ -16,10 +16,11 @@ python_name() {
 	echo "Python language"
 }
 
-python_version() {
-	echo "$(applications_version "$1")"
-}
 
 python_status() {
 	applications_status "$1"
+}
+
+python_version() {
+	echo "$(applications_version "$1")"
 }

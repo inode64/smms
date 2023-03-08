@@ -12,10 +12,10 @@ dhclient_name() {
 	echo "Client DHCP"
 }
 
-dhclient_version() {
-	echo "$(applications_version "$1")"
-}
-
 dhclient_status() {
 	applications_version "$1" &>/dev/null
+}
+
+dhclient_version() {
+	echo "$(applications_version "$1")"
 }

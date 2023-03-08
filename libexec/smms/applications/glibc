@@ -12,10 +12,10 @@ glibc_name() {
 	echo "GNU libc C library"
 }
 
-glibc_version() {
-	echo "$(applications_version "$1")" | head -1
-}
-
 glibc_status() {
 	applications_version "$1" &>/dev/null
+}
+
+glibc_version() {
+	echo "$(applications_version "$1")" | head -1
 }
