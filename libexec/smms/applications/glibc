@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+glibc_exists() {
+	test -x "$(WHICH ldd)"
+}
+
+glibc_list() {
+	glibc_exists && echo "ldd"
+}
+
+glibc_name() {
+	echo "GNU libc C library"
+}
+
+glibc_version() {
+	echo "$(applications_version "$1")" | head -1
+}
+
+glibc_status() {
+	applications_version "$1" &>/dev/null
+}
