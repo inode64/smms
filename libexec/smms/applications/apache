@@ -13,7 +13,7 @@ apache_name() {
 }
 
 apache_version() {
-	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2
+	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2 | xargs
 }
 
 apache_status() {
