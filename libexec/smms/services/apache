@@ -33,16 +33,24 @@ apache_service_name() {
 }
 
 apache_service_info() {
-	echo "$(applications_vv "$1")"
+	$(applications_vv /usb/sbin/apache2)
 }
 
 apache_service_status() {
+	local mods
+
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		/etc/init.d/apache2 configtest &>/dev/null && return
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		/usr/sbin/apache2ctl configtest &>/dev/null && return
+		case "$(getDistro)" in
+		"${SMMS_OS_GENTOO}")
+			mods="$(grep ^APACHE2_OPTS= /etc/conf.d/apache2 | cut -d\" -f2)"
+			;;
+		esac
+
+		/usr/sbin/apache2ctl ${mods} configtest &>/dev/null && return
 		;;
 	esac
 
