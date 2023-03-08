@@ -33,7 +33,7 @@ apache_service_name() {
 }
 
 apache_service_info() {
-	$(applications_vv /usb/sbin/apache2)
+	echo "$(applications_vv /usb/sbin/apache2)"
 }
 
 apache_service_status() {

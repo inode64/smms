@@ -5,6 +5,20 @@ source "${SMMS_ROOT}/lib/smms/common.bash"
 source "${SMMS_ROOT}/lib/smms/applications.bash"
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
+check_services() {
+	local service
+
+	for service in "${SMMS_SERVICES[@]}"; do
+		for list in $(${service}_service_list); do
+			echo -n "$(${service}_service_name) | ${list} | $(${service}_service_info "${list}") | status "
+			if $(${service}_service_status "${list}"); then
+				echo "ok"
+			else
+				echo "fail"
+			fi
+		done
+	done
+}
 start_services() {
 	local service s
 
@@ -12,9 +26,9 @@ start_services() {
 		for service in "${SMMS_SERVICES[@]}"; do
 			if $(SMMS_SERVICE_LIST "${service}" "${s}"); then
 				echo "$s exist"
-					if $(${service}_service_status "${s}"); then
-						echo "$s is OK"
-					fi
+				if $(${service}_service_status "${s}"); then
+					echo "$s is OK"
+				fi
 			fi
 		done
 	done
@@ -27,6 +41,10 @@ opt_parse() {
 	while [ "${#}" -gt '0' ]; do
 		case "${1?}" in
 		# Short options that accept a value need a "*" in their pattern because they can be found in the "-A<value>" form.
+		'check_services' | 'check_srv')
+			services="true"
+			break
+			;;
 		'start')
 			if [ "${#}" -eq '1' ]; then
 				optDie "No services to start"
@@ -196,8 +214,7 @@ main() {
 	reload=()
 	restart=()
 	check=()
-
-	applications="false"
+	services="false"
 	debug="false"
 	quiet="false"
 	color="true"
@@ -232,6 +249,10 @@ main() {
 
 	if [ "${start}" ]; then
 		start_services
+	fi
+
+	if [ "${services:?}" = "true" ]; then
+		check_services
 	fi
 }
 
