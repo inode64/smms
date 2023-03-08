@@ -1,22 +1,58 @@
 #!/usr/bin/env bash
+#
+# Fcron functions
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 fcron_exists() {
 	test -x "$(WHICH fcron)"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 fcron_list() {
 	fcron_exists && echo "fcron"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 fcron_name() {
 	echo "Fcron"
 }
 
-
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 fcron_status() {
 	applications_version "$1" &>/dev/null
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 fcron_version() {
 	echo "$(applications_version "$1")"
 }

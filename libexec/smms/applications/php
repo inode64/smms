@@ -1,9 +1,25 @@
 #!/usr/bin/env bash
+#
+# Python php
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 php_exists() {
 	test -x "$(WHICH "$1")"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 php_list() {
 	local PHP
 
@@ -12,15 +28,35 @@ php_list() {
 	done
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 php_name() {
 	echo "PHP language"
 }
 
-
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 php_status() {
 	applications_status "$1"
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 php_version() {
 	echo "$(applications_version "$1")" | head -1
 }

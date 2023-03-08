@@ -1,21 +1,58 @@
 #!/usr/bin/env bash
+#
+# Glibc functions
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 glibc_exists() {
 	test -x "$(WHICH ldd)"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 glibc_list() {
 	glibc_exists && echo "ldd"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 glibc_name() {
 	echo "GNU libc C library"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 glibc_status() {
 	applications_version "$1" &>/dev/null
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 glibc_version() {
 	echo "$(applications_version "$1")" | head -1
 }

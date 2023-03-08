@@ -1,21 +1,58 @@
 #!/usr/bin/env bash
+#
+# Dhclient functions
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 dhclient_exists() {
 	test -x "$(WHICH dhclient)"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 dhclient_list() {
 	dhclient_exists && echo "dhclient"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 dhclient_name() {
 	echo "Client DHCP"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 dhclient_status() {
 	applications_version "$1" &>/dev/null
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 dhclient_version() {
 	echo "$(applications_version "$1")"
 }

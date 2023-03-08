@@ -1,22 +1,58 @@
 #!/usr/bin/env bash
+#
+# Dbus functions
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 dbus_exists() {
 	test -x "$(WHICH dbus-daemon)"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 dbus_list() {
 	dbus_exists && echo "dbus-daemon"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 dbus_name() {
 	echo "DBUS daemon"
 }
 
-
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 dbus_status() {
 	applications_version "$1" &>/dev/null
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 dbus_version() {
 	echo "$(applications_version "$1")"
 }

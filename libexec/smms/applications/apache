@@ -1,22 +1,58 @@
 #!/usr/bin/env bash
+#
+# Apache functions
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if exists, non-zero application is missing
+#######################################
 apache_exists() {
 	test -x "$(WHICH apache2)"
 }
 
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
 apache_list() {
 	apache_exists && echo "apache2"
 }
 
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
 apache_name() {
 	echo "The Apache Web Server"
 }
 
-
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
 apache_status() {
 	applications_vv "$1" &>/dev/null
 }
 
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
 apache_version() {
 	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2 | xargs
 }
