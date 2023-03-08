@@ -11,13 +11,10 @@ start_services() {
 	for s in "${start[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if $(SMMS_SERVICE_LIST "${service}" "${s}"); then
-				echo "$s existe"
-				if $(${service}_service_exists "${s}"); then
-					echo "$s activo"
+				echo "$s exist"
 					if $(${service}_service_status "${s}"); then
-						echo "$s correcto"
+						echo "$s is OK"
 					fi
-				fi
 			fi
 		done
 	done

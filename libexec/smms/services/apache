@@ -14,18 +14,18 @@ apache_service_exists() {
 }
 
 apache_service_list() {
-	echo apache2 apache2.service
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		test -x /etc/init.d/apache2 && echo apache2 apache2.service
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		test -e /lib/systemd/system/apache2.service && echo apache2 apache2.service
+		;;
+	esac
 }
 
 apache_service_cmd() {
-	case "$(InitSystem)" in
-	"${SMMS_INIT_OPENRC}")
-		echo "apache"
-		;;
-	"${SMMS_INIT_SYSTEMD}")
-		echo "apache.service"
-		;;
-	esac
+	WHICH apache2
 }
 
 apache_service_name() {
@@ -39,10 +39,10 @@ apache_service_info() {
 apache_service_status() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		/etc/init.d/apache2 configtest && return
+		/etc/init.d/apache2 configtest &>/dev/null && return
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		apache2ctl configtest && return
+		/usr/sbin/apache2ctl configtest &>/dev/null && return
 		;;
 	esac
 
