@@ -18,7 +18,7 @@ applications_status() {
 
 SMMS_APLICATIONS=()
 for app in ${SMMS_ROOT}/libexec/smms/applications/*; do
-	SMMS_APLICATIONS+=( "$(basename "${app}")" )
+	SMMS_APLICATIONS+=("$(basename "${app}")")
 	source "${app}"
 done
 

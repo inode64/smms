@@ -21,7 +21,7 @@ php_name() {
 }
 
 php_version() {
-	echo "$(applications_version "$1")"|head -1
+	echo "$(applications_version "$1")" | head -1
 }
 
 php_status() {

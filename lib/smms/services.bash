@@ -2,7 +2,7 @@
 
 SMMS_SERVICES=()
 for service in ${SMMS_ROOT}/libexec/smms/services/*; do
-	SMMS_SERVICES+=( "$(basename "${service}")" )
+	SMMS_SERVICES+=("$(basename "${service}")")
 	source "${service}"
 done
 
