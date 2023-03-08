@@ -7,7 +7,7 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 check_applicacions() {
 	local app
 
-	for app in "${SMMS_APLICATIONS[@]}"; do
+	for app in "${SMMS_APPLICATIONS[@]}"; do
 		for list in $(${app}_list); do
 			echo -n "$(${app}_name) | ${list} | $(${app}_version "${list}") | status "
 			if $(${app}_status "${list}"); then
