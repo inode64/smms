@@ -8,7 +8,7 @@ php_list() {
 	local PHP
 
 	for PHP in php php5 php5.{0..6} php7 php7.{0..4} php8 php8.{0..4}; do
-		test ! -x "$(WHICH "$PHP")" || echo "$PHP"
+		test -x "$(WHICH "$PHP")" && echo "$PHP"
 	done
 }
 

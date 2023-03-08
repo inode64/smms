@@ -33,3 +33,13 @@ SMMS_SERVICE() {
 
 	return 1
 }
+
+SMMS_SERVICE_LIST() {
+	local s
+
+	for s in $(${1}_service_list); do
+		test "$s" == "$2" && return
+	done
+
+	return 1
+}

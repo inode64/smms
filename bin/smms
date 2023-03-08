@@ -60,4 +60,4 @@ fi
 export SMMS_ROOT=${SMMS_PATH%/*/*}
 export -f smms_readlinkf
 
-exec env SMMS_ROOT="$SMMS_ROOT" "$SMMS_ROOT/libexec/smms/$(basename "${BASH_SOURCE[0]}")" "$@"
+exec env SMMS_ROOT="$SMMS_ROOT" "$SMMS_ROOT/libexec/smms/${BASH_SOURCE[0]}" "$@"

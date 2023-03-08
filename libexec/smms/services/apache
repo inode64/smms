@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
-APACHE_SERVICE_LIST=(apache2 apache2.service)
+apache_service_exists() {
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		test -x /etc/init.d/apache2 && return
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		test -e /lib/systemd/system/apache2.service && return
+		;;
+	esac
+
+	return 1
+}
 
 apache_service_list() {
-	apache_service_exists && echo "apache2"
+	echo apache2 apache2.service
 }
 
 apache_service_cmd() {
