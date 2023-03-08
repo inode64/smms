@@ -8,10 +8,6 @@ dhclient_list() {
 	dhclient_exists && echo "dhclient"
 }
 
-dhclient_cmd() {
-	test "$1" == "dhclient"
-}
-
 dhclient_name() {
 	echo "Client DHCP"
 }

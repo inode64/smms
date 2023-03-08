@@ -8,10 +8,6 @@ apache_list() {
 	apache_exists && echo "apache2"
 }
 
-apache_cmd() {
-	test "$1" == "apache" || test "$1" == "apache2"
-}
-
 apache_name() {
 	echo "The Apache Web Server"
 }

@@ -8,10 +8,6 @@ dbus_list() {
 	dbus_exists && echo "dbus-daemon"
 }
 
-dbus_cmd() {
-	test "$1" == "dbus-daemon"
-}
-
 dbus_name() {
 	echo "DBUS daemon"
 }

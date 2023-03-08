@@ -8,10 +8,6 @@ fcron_list() {
 	fcron_exists && echo "fcron"
 }
 
-fcron_cmd() {
-	test "$1" == "fcron"
-}
-
 fcron_name() {
 	echo "Fcron"
 }

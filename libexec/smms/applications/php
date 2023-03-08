@@ -12,10 +12,6 @@ php_list() {
 	done
 }
 
-php_cmd() {
-	echo "$1" | grep -qe "^php\([5-9]\)\?\(\.[0-9]*\)\?$"
-}
-
 php_name() {
 	echo "PHP language"
 }
