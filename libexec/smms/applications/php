@@ -58,5 +58,5 @@ php_status() {
 #   Show the version of application to stdout
 #######################################
 php_version() {
-	echo "$(applications_version "$1")" | head -1
+	applications_version "$1" | head -1
 }

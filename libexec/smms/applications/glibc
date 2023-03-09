@@ -54,5 +54,5 @@ glibc_status() {
 #   Show the version of application to stdout
 #######################################
 glibc_version() {
-	echo "$(applications_version "$1")" | head -1
+	applications_version "$1" | head -1
 }

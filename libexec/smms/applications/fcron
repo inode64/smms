@@ -54,5 +54,5 @@ fcron_status() {
 #   Show the version of application to stdout
 #######################################
 fcron_version() {
-	echo "$(applications_version "$1")"
+	applications_version "$1"
 }

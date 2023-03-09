@@ -18,7 +18,7 @@ phpfpm_service_list() {
 		;;
 	esac
 
-	popd &>/dev/null
+	popd &>/dev/null || return
 }
 
 phpfpm_service_exixts() {
@@ -43,7 +43,7 @@ phpfpm_service_cmd() {
 }
 
 phpfpm_service_info() {
-	echo $(applications_version "php-fpm$(getVersion "$1")")
+	applications_version "php-fpm$(getVersion "$1")"
 }
 
 phpfpm_service_status() {

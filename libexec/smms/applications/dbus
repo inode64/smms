@@ -54,5 +54,5 @@ dbus_status() {
 #   Show the version of application to stdout
 #######################################
 dbus_version() {
-	echo "$(applications_version "$1")"
+	applications_version "$1" | head -1
 }

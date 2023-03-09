@@ -54,5 +54,5 @@ apache_status() {
 #   Show the version of application to stdout
 #######################################
 apache_version() {
-	echo "$(applications_vv "$1")" | grep "Server version" | cut -d: -f2 | xargs
+	applications_vv "$1" | grep "Server version" | cut -d: -f2 | xargs
 }
