@@ -10,7 +10,7 @@
 #   0 if exists, non-zero application is missing
 #######################################
 fcron_exists() {
-	test -x "$(WHICH fcron)"
+	check_program fcron
 }
 
 #######################################

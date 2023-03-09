@@ -10,7 +10,7 @@
 #   0 if exists, non-zero application is missing
 #######################################
 php_exists() {
-	test -x "$(WHICH "$1")"
+	check_program "$1"
 }
 
 #######################################
@@ -24,7 +24,7 @@ php_list() {
 	local PHP
 
 	for PHP in php php5 php5.{0..6} php7 php7.{0..4} php8 php8.{0..4}; do
-		test -x "$(WHICH "$PHP")" && echo "$PHP"
+		php_exists "$PHP" && echo "$PHP"
 	done
 }
 

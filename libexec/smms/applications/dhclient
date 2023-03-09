@@ -10,7 +10,7 @@
 #   0 if exists, non-zero application is missing
 #######################################
 dhclient_exists() {
-	test -x "$(WHICH dhclient)"
+	check_program dhclient
 }
 
 #######################################

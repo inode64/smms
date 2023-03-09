@@ -147,7 +147,11 @@ check_program() {
 	test -x "${cmd}"
 	err=$?
 	if [ "${debug:?}" = 'true' ]; then
-		print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
+		if [[ "${err}" == "0" ]]; then
+			print_info "Check program $1 -> ${cmd} with result $(falsetrue ${err})" >&2
+		else
+			print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
+		fi
 	fi
 	return ${err}
 }

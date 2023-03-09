@@ -10,7 +10,7 @@
 #   0 if exists, non-zero application is missing
 #######################################
 glibc_exists() {
-	test -x "$(WHICH ldd)"
+	check_program ldd
 }
 
 #######################################
