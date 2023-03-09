@@ -50,7 +50,7 @@ apache_service_status() {
 			;;
 		esac
 
-		/usr/sbin/apache2ctl ${mods} configtest &>/dev/null && return
+		/usr/sbin/apache2 ${mods} -t &>/dev/null && return
 		;;
 	esac
 
