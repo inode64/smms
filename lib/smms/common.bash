@@ -133,8 +133,7 @@ getVersion() {
 	echo "$1" | grep -o "\([1-9]\)\?\(\(\.[0-9]\+\)\?\(\.[0-9]\+\)\)\?"
 }
 
-falsetrue()
-{
+falsetrue() {
 	if [[ "$1" == "0" ]]; then
 		echo "True"
 	else
@@ -147,6 +146,8 @@ check_program() {
 	cmd=$(WHICH "$1")
 	test -x "${cmd}"
 	err=$?
-	print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
+	if [ "${debug:?}" = 'true' ]; then
+		print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
+	fi
 	return ${err}
 }

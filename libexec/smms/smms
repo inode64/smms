@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# shellcheck source=./../../lib/smms/common.bash
 source "${SMMS_ROOT}/lib/smms/common.bash"
+# shellcheck source=./../../lib/smms/applications.bash
 source "${SMMS_ROOT}/lib/smms/applications.bash"
 
 check_applicacions() {

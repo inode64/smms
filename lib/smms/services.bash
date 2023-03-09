@@ -3,6 +3,7 @@
 SMMS_SERVICES=()
 for service in ${SMMS_ROOT}/libexec/smms/services/*; do
 	SMMS_SERVICES+=("$(basename "${service}")")
+	# shellcheck source=libexec/smms/services/${service}
 	source "${service}"
 done
 

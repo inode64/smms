@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# shellcheck source=./../../lib/smms/common.bash
 source "${SMMS_ROOT}/lib/smms/common.bash"
+# shellcheck source=./../../lib/smms/applications.bash
 source "${SMMS_ROOT}/lib/smms/applications.bash"
+# shellcheck source=./../../lib/smms/services.bash
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
 check_services() {
@@ -251,7 +254,7 @@ main() {
 		NO_STDOUT='true'
 	fi
 
-	if [ "${start}" ]; then
+	if [ "${start[@]}" ]; then
 		start_services
 	fi
 
