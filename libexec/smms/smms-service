@@ -104,6 +104,10 @@ opt_parse() {
 			optArgBool "${@-}"
 			quiet="${optArg:?}"
 			;;
+		'-d' | '--debug' | '--no-debug')
+			optArgBool "${@-}"
+			debug="${optArg:?}"
+			;;
 		'-x'* | '--color')
 			optArgStr "${@-}"
 			color="${optArg?}"
