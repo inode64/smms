@@ -132,3 +132,21 @@ Fatal() {
 getVersion() {
 	echo "$1" | grep -o "\([1-9]\)\?\(\(\.[0-9]\+\)\?\(\.[0-9]\+\)\)\?"
 }
+
+falsetrue()
+{
+	if [[ "$1" == "0" ]]; then
+		echo "True"
+	else
+		echo "False"
+	fi
+}
+
+check_program() {
+	local cmd err
+	cmd=$(WHICH "$1")
+	test -x "${cmd}"
+	err=$?
+	print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
+	return ${err}
+}

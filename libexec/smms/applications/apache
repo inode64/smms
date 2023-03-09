@@ -10,7 +10,7 @@
 #   0 if exists, non-zero application is missing
 #######################################
 apache_exists() {
-	test -x "$(WHICH apache2)"
+	check_program apache2
 }
 
 #######################################
