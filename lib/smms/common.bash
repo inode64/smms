@@ -134,11 +134,7 @@ getVersion() {
 }
 
 falsetrue() {
-	if [[ "$1" == "0" ]]; then
-		echo "True"
-	else
-		echo "False"
-	fi
+	[[ "$1" == "0" ]] && echo "True" || echo "False"
 }
 
 check_program() {
