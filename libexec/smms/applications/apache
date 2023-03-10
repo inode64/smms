@@ -5,23 +5,12 @@
 #######################################
 # Check if application exist in the system
 # Arguments:
-#   command to check for one returned from the list of the xxxx_list function
-# Outputs:
-#   0 if exists, non-zero application is missing
-#######################################
-apache_exists() {
-	check_program apache2
-}
-
-#######################################
-# Check if application exist in the system
-# Arguments:
 #   None
 # Outputs:
 #   Show the list the pythons versions to stdout
 #######################################
 apache_list() {
-	apache_exists && echo "apache2"
+	check_program "apache2"
 }
 
 #######################################

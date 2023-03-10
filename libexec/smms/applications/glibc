@@ -5,23 +5,12 @@
 #######################################
 # Check if application exist in the system
 # Arguments:
-#   command to check for one returned from the list of the xxxx_list function
-# Outputs:
-#   0 if exists, non-zero application is missing
-#######################################
-glibc_exists() {
-	check_program ldd
-}
-
-#######################################
-# Check if application exist in the system
-# Arguments:
 #   None
 # Outputs:
 #   Show the list the pythons versions to stdout
 #######################################
 glibc_list() {
-	glibc_exists && echo "ldd"
+	check_program "ldd"
 }
 
 #######################################

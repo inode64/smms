@@ -152,5 +152,5 @@ check_program() {
 		fi
 	fi
 
-	return ${err}
+	[[ "${err}" == "0" ]] && echo "${cmd}"
 }

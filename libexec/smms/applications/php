@@ -5,17 +5,6 @@
 #######################################
 # Check if application exist in the system
 # Arguments:
-#   command to check for one returned from the list of the xxxx_list function
-# Outputs:
-#   0 if exists, non-zero application is missing
-#######################################
-php_exists() {
-	check_program "$1"
-}
-
-#######################################
-# Check if application exist in the system
-# Arguments:
 #   None
 # Outputs:
 #   Show the list the pythons versions to stdout
@@ -24,7 +13,7 @@ php_list() {
 	local PHP
 
 	for PHP in php php5 php5.{0..6} php7 php7.{0..4} php8 php8.{0..4}; do
-		php_exists "$PHP" && echo "$PHP"
+		check_program "$PHP"
 	done
 }
 

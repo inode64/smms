@@ -5,17 +5,6 @@
 #######################################
 # Check if application exist in the system
 # Arguments:
-#   command to check for one returned from the list of the xxxx_list function
-# Outputs:
-#   0 if exists, non-zero application is missing
-#######################################
-python_exists() {
-	check_program "$1"
-}
-
-#######################################
-# Check if application exist in the system
-# Arguments:
 #   None
 # Outputs:
 #   Show the list the pythons versions to stdout
@@ -24,7 +13,7 @@ python_list() {
 	local PYTHON
 
 	for PYTHON in python2 python2.7 python3 python3.{4..13}; do
-		python_exists "$PYTHON" && echo "$PYTHON"
+		check_program "$PYTHON"
 	done
 }
 

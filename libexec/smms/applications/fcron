@@ -2,16 +2,6 @@
 #
 # Fcron functions
 
-#######################################
-# Check if application exist in the system
-# Arguments:
-#   command to check for one returned from the list of the xxxx_list function
-# Outputs:
-#   0 if exists, non-zero application is missing
-#######################################
-fcron_exists() {
-	check_program fcron
-}
 
 #######################################
 # Check if application exist in the system
@@ -21,7 +11,7 @@ fcron_exists() {
 #   Show the list the pythons versions to stdout
 #######################################
 fcron_list() {
-	fcron_exists && echo "fcron"
+	check_program "fcron"
 }
 
 #######################################
