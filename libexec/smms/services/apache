@@ -1,25 +1,18 @@
 #!/usr/bin/env bash
 
-apache_service_exists() {
-	case "$(InitSystem)" in
-	"${SMMS_INIT_OPENRC}")
-		test -x /etc/init.d/apache2 && return
-		;;
-	"${SMMS_INIT_SYSTEMD}")
-		test -e /lib/systemd/system/apache2.service && return
-		;;
-	esac
-
-	return 1
-}
-
 apache_service_list() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		test -x /etc/init.d/apache2 && echo apache2 apache2.service
+		test -x /etc/init.d/apache2 && (
+			echo apache2
+			[[ "$1" != "only" ]] && echo apache2.service
+		)
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		test -e /lib/systemd/system/apache2.service && echo apache2 apache2.service
+		test -e /lib/systemd/system/apache2.service && (
+			echo apache2.service
+			[[ "$1" != "only" ]] && echo apache2
+		)
 		;;
 	esac
 }

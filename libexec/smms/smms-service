@@ -8,13 +8,13 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 # shellcheck source=./../../lib/smms/services.bash
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
-check_services() {
+check_all_services() {
 	local service
 
 	for service in "${SMMS_SERVICES[@]}"; do
-		for list in $(${service}_service_list); do
+		for list in $(${service}_service_list only); do
 			echo -n "$(${service}_service_name) | ${list} | $(${service}_service_info "${list}") | status "
-			if $(${service}_service_status "${list}"); then
+			if ${service}_service_status "${list}"; then
 				echo "ok"
 			else
 				echo "fail"
@@ -22,15 +22,53 @@ check_services() {
 		done
 	done
 }
+
 start_services() {
 	local service s
 
 	for s in "${start[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
-			if $(SMMS_SERVICE_LIST "${service}" "${s}"); then
-				echo "$s exist"
-				if $(${service}_service_status "${s}"); then
-					echo "$s is OK"
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+				SMMS_SERVICE start "${s}"
+			fi
+		done
+	done
+}
+
+stop_services() {
+	local service s
+
+	for s in "${start[@]}"; do
+		for service in "${SMMS_SERVICES[@]}"; do
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+				SMMS_SERVICE stop "${s}"
+			fi
+		done
+	done
+}
+
+reload_services() {
+	local service s
+
+	for s in "${start[@]}"; do
+		for service in "${SMMS_SERVICES[@]}"; do
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+				SMMS_SERVICE reload "${s}"
+			fi
+		done
+	done
+}
+
+check_services() {
+	local service s
+
+	for s in "${start[@]}"; do
+		for service in "${SMMS_SERVICES[@]}"; do
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
+				if $(${service}_service_status "${list}"); then
+					print_info "Service ${s} has a correct configuration"
+				else
+					print_info "Service ${s} has an incorrect configuration"
 				fi
 			fi
 		done
@@ -258,8 +296,24 @@ main() {
 		start_services
 	fi
 
-	if [ "${services:?}" = "true" ]; then
+	if [ "${stop[@]}" ]; then
+		stop_services
+	fi
+
+	if [ "${reload[@]}" ]; then
+		reload_services
+	fi
+
+	if [ "${check[@]}" ]; then
 		check_services
+	fi
+
+	if [ "${restart[@]}" ]; then
+		restart_services
+	fi
+
+	if [ "${services:?}" = "true" ]; then
+		check_all_services
 	fi
 }
 

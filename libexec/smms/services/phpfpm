@@ -7,31 +7,24 @@ phpfpm_service_list() {
 	"${SMMS_INIT_OPENRC}")
 		pushd "/etc/init.d/" &>/dev/null || return 1
 		for PHP in php5.{0..6} php7.{0..4} php8.{0..4}; do
-			test -x "${PHP}" && echo "${PHP}" "php-fpm@$(getVersion "$PHP").service"
+			test -x "${PHP}" && (
+				echo "${PHP}"
+				[[ "$1" != "only" ]] && echo "php-fpm@$(getVersion "$PHP").service"
+			)
 		done
 		;;
 	"${SMMS_INIT_SYSTEMD}")
 		pushd "/lib/systemd/system/" &>/dev/null || return 1
 		for PHP in php-fpm@5.{0..6}.* php-fpm@7.{0..4}.* php-fpm@8.{0..4}.*; do
-			test -e "${PHP}" && echo "${PHP}" "php$(getVersion "${PHP}")"
+			test -e "${PHP}" && (
+				echo "php-fpm@$(getVersion "$PHP").service"
+				[[ "$1" != "only" ]] && echo "${PHP}"
+			)
 		done
 		;;
 	esac
 
 	popd &>/dev/null || return
-}
-
-phpfpm_service_exixts() {
-	case "$(InitSystem)" in
-	"${SMMS_INIT_OPENRC}")
-		/etc/init.d/${1} configtest && return
-		;;
-	"${SMMS_INIT_SYSTEMD}")
-		php-fpm$(getVersion "$1") -t /etc/php/fpm-php$(getVersion "$1")/php-fpm.conf -t && return
-		;;
-	esac
-
-	return 1
 }
 
 phpfpm_service_name() {
