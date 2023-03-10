@@ -139,9 +139,11 @@ falsetrue() {
 
 check_program() {
 	local cmd err
+
 	cmd=$(WHICH "$1")
 	test -x "${cmd}"
 	err=$?
+
 	if [ "${debug:?}" = 'true' ]; then
 		if [[ "${err}" == "0" ]]; then
 			print_info "Check program $1 -> ${cmd} with result $(falsetrue ${err})" >&2
@@ -149,5 +151,6 @@ check_program() {
 			print_info "Check program ${cmd} with result $(falsetrue ${err})" >&2
 		fi
 	fi
+
 	return ${err}
 }
