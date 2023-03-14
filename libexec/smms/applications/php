@@ -9,7 +9,7 @@
 # Outputs:
 #   Show the list the pythons versions to stdout
 #######################################
-php_list() {
+php_application_list() {
 	entry_function ${FUNCNAME} "$@"
 
 	local PHP
@@ -26,7 +26,7 @@ php_list() {
 # Outputs:
 #   Show the name of application to stdout
 #######################################
-php_name() {
+php_application_name() {
 	entry_function ${FUNCNAME} "$@"
 
 	echo "PHP language"
@@ -39,7 +39,7 @@ php_name() {
 # Outputs:
 #   0 if application in run fine, non-zero application have a problem
 #######################################
-php_status() {
+php_application_status() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_status "$1"
@@ -52,7 +52,7 @@ php_status() {
 # Outputs:
 #   Show the version of application to stdout
 #######################################
-php_version() {
+php_application_version() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_version "$1" | head -1

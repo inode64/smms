@@ -9,7 +9,7 @@
 # Outputs:
 #   Show the list the pythons versions to stdout
 #######################################
-python_list() {
+python_application_list() {
 	entry_function ${FUNCNAME} "$@"
 
 	local PYTHON
@@ -26,7 +26,7 @@ python_list() {
 # Outputs:
 #   Show the name of application to stdout
 #######################################
-python_name() {
+python_application_name() {
 	entry_function ${FUNCNAME} "$@"
 
 	echo "Python language"
@@ -39,7 +39,7 @@ python_name() {
 # Outputs:
 #   0 if application in run fine, non-zero application have a problem
 #######################################
-python_status() {
+python_application_status() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_status "$1"
@@ -52,7 +52,7 @@ python_status() {
 # Outputs:
 #   Show the version of application to stdout
 #######################################
-python_version() {
+python_application_version() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_version "$1"

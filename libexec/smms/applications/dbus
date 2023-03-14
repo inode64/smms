@@ -9,7 +9,7 @@
 # Outputs:
 #   Show the list the pythons versions to stdout
 #######################################
-dbus_list() {
+dbus_application_list() {
 	entry_function ${FUNCNAME} "$@"
 
 	check_program "dbus-daemon"
@@ -22,7 +22,7 @@ dbus_list() {
 # Outputs:
 #   Show the name of application to stdout
 #######################################
-dbus_name() {
+dbus_application_name() {
 	entry_function ${FUNCNAME} "$@"
 
 	echo "DBUS daemon"
@@ -35,7 +35,7 @@ dbus_name() {
 # Outputs:
 #   0 if application in run fine, non-zero application have a problem
 #######################################
-dbus_status() {
+dbus_application_status() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_version "$1" &>/dev/null
@@ -48,7 +48,7 @@ dbus_status() {
 # Outputs:
 #   Show the version of application to stdout
 #######################################
-dbus_version() {
+dbus_application_version() {
 	entry_function ${FUNCNAME} "$@"
 
 	applications_version "$1" | head -1

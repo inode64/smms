@@ -10,9 +10,9 @@ check_applicacions() {
 	local app
 
 	for app in "${SMMS_APPLICATIONS[@]}"; do
-		for list in $(${app}_list); do
-			echo -n "$(${app}_name) | ${list} | $(${app}_version "${list}") | status "
-			if $(${app}_status "${list}"); then
+		for list in $(${app}_application_list); do
+			echo -n "$(${app}_application_name) | ${list} | $(${app}_application_version "${list}") | status "
+			if $(${app}_application_status "${list}"); then
 				echo "ok"
 			else
 				echo "fail"
