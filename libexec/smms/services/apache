@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 apache_service_list() {
+	entry_function ${FUNCNAME} "$@"
+
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		test -x /etc/init.d/apache2 && (
@@ -18,18 +20,26 @@ apache_service_list() {
 }
 
 apache_service_cmd() {
+	entry_function ${FUNCNAME} "$@"
+
 	WHICH apache2
 }
 
 apache_service_name() {
+	entry_function ${FUNCNAME} "$@"
+
 	echo "The Apache Web Server"
 }
 
 apache_service_info() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_vv "$(apache_list)"
 }
 
 apache_service_status() {
+	entry_function ${FUNCNAME} "$@"
+
 	local mods
 
 	case "$(InitSystem)" in

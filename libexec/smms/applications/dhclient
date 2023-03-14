@@ -10,6 +10,8 @@
 #   Show the list the pythons versions to stdout
 #######################################
 dhclient_list() {
+	entry_function ${FUNCNAME} "$@"
+
 	check_program "dhclient"
 }
 
@@ -21,6 +23,8 @@ dhclient_list() {
 #   Show the name of application to stdout
 #######################################
 dhclient_name() {
+	entry_function ${FUNCNAME} "$@"
+
 	echo "Client DHCP"
 }
 
@@ -32,6 +36,8 @@ dhclient_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 dhclient_status() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_version "$1" &>/dev/null
 }
 
@@ -43,5 +49,7 @@ dhclient_status() {
 #   Show the version of application to stdout
 #######################################
 dhclient_version() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_version "$1" 2>&1
 }

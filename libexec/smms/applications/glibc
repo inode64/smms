@@ -10,6 +10,8 @@
 #   Show the list the pythons versions to stdout
 #######################################
 glibc_list() {
+	entry_function ${FUNCNAME} "$@"
+
 	check_program "ldd"
 }
 
@@ -21,6 +23,8 @@ glibc_list() {
 #   Show the name of application to stdout
 #######################################
 glibc_name() {
+	entry_function ${FUNCNAME} "$@"
+
 	echo "GNU libc C library"
 }
 
@@ -32,6 +36,8 @@ glibc_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 glibc_status() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_version "$1" &>/dev/null
 }
 

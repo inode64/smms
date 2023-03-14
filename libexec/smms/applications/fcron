@@ -11,6 +11,8 @@
 #   Show the list the pythons versions to stdout
 #######################################
 fcron_list() {
+	entry_function ${FUNCNAME} "$@"
+
 	check_program "fcron"
 }
 
@@ -22,6 +24,8 @@ fcron_list() {
 #   Show the name of application to stdout
 #######################################
 fcron_name() {
+	entry_function ${FUNCNAME} "$@"
+
 	echo "Fcron"
 }
 
@@ -33,6 +37,8 @@ fcron_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 fcron_status() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_version "$1" &>/dev/null
 }
 
@@ -44,5 +50,7 @@ fcron_status() {
 #   Show the version of application to stdout
 #######################################
 fcron_version() {
+	entry_function ${FUNCNAME} "$@"
+
 	applications_version "$1"
 }
