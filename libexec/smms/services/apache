@@ -34,7 +34,7 @@ apache_service_name() {
 apache_service_info() {
 	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
-	applications_vv "$(apache_list)"
+	applications_vv "$(apache_service_cmd)"
 }
 
 apache_service_status() {

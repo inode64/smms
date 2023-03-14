@@ -162,6 +162,21 @@ entry_function() {
 	name=$(echo ${1} | cut -d_ -f1)
 	type=$(echo ${1} | cut -d_ -f2)
 	cmd=$(echo ${1} | cut -d_ -f3)
+
+	[[ "${type}" != "application" ]] && [[ "${type}" != "service" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
+	[[ ! "${cmd}" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
+
+	if [[ "${type}" == "application" ]]; then
+		if [[ "${cmd}" == "status" ]] || [[ "${cmd}" == "version" ]] ; then
+			check_list "${name}" "${type}" "${3}"
+		fi
+	fi
+
+	if [[ "${type}" == "service" ]]; then
+		if [[ "${cmd}" == "cmd" ]] || [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "status" ]] ; then
+			check_list "${name}" "${type}" "${3}"
+		fi
+	fi
 }
 
 check_list() {
@@ -171,7 +186,7 @@ check_list() {
 	type=$2
 	cmd=$3
 
-	for result in ${name}_${type}_list; do
+	for result in $(${name}_${type}_list); do
 		[[ "${result}" == "${cmd}" ]] && return 0
 	done
 
