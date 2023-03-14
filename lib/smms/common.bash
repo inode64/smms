@@ -168,12 +168,14 @@ entry_function() {
 
 	if [[ "${type}" == "application" ]]; then
 		if [[ "${cmd}" == "status" ]] || [[ "${cmd}" == "version" ]] ; then
+			[[ ! "${3}" ]] && Fatal "La function ${name}_${type}_${cmd} need parameter"
 			check_list "${name}" "${type}" "${3}"
 		fi
 	fi
 
 	if [[ "${type}" == "service" ]]; then
-		if [[ "${cmd}" == "cmd" ]] || [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "status" ]] ; then
+		if [[ "${cmd}" == "cmd" ]] || [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "process" ]]|| [[ "${cmd}" == "status" ]] ; then
+			[[ ! "${3}" ]] && Fatal "La function ${name}_${type}_${cmd} need parameter"
 			check_list "${name}" "${type}" "${3}"
 		fi
 	fi

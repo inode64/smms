@@ -37,6 +37,12 @@ apache_service_info() {
 	applications_vv "$(apache_service_cmd)"
 }
 
+apache_service_process() {
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+
+	pgrep "$1"
+}
+
 apache_service_status() {
 	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 

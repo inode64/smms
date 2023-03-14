@@ -47,6 +47,18 @@ phpfpm_service_info() {
 	applications_version "php-fpm$(getVersion "$1")"
 }
 
+phpfpm_service_process() {
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+
+	local pool
+
+	pgrep /etc/php/fpm-php$(getVersion "$1")/php-fpm.conf -f
+
+	grep -ae '^\[' /etc/php/fpm-php$(getVersion "$1")/fpm.d/*.conf | cut -d\[ -f2 | cut -d\] -f1 | while read -r pool; do
+         pgrep "pool ${pool}" -f
+    done
+}
+
 phpfpm_service_status() {
 	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
