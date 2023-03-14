@@ -156,5 +156,5 @@ check_program() {
 }
 
 entry_function() {
-	[[ "${debug:?}" = 'true' ]] && print_info "${1}: entering function, parameters: ${*:2}"
+	[[ "${debug:?}" = 'true' ]] && print_info "${1} from ${2}: entering function, parameters: ${*:3}"
 }

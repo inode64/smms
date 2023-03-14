@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 apache_service_list() {
-	entry_function ${FUNCNAME} "$@"
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
@@ -20,25 +20,25 @@ apache_service_list() {
 }
 
 apache_service_cmd() {
-	entry_function ${FUNCNAME} "$@"
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
 	apache_application_list
 }
 
 apache_service_name() {
-	entry_function ${FUNCNAME} "$@"
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
 	echo "The Apache Web Server"
 }
 
 apache_service_info() {
-	entry_function ${FUNCNAME} "$@"
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
 	applications_vv "$(apache_list)"
 }
 
 apache_service_status() {
-	entry_function ${FUNCNAME} "$@"
+	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
 
 	local mods
 
