@@ -157,4 +157,23 @@ check_program() {
 
 entry_function() {
 	[[ "${debug:?}" = 'true' ]] && print_info "${1} from ${2}: entering function, parameters: ${*:3}"
+
+	local name type cmd
+	name=$(echo ${1} | cut -d_ -f1)
+	type=$(echo ${1} | cut -d_ -f2)
+	cmd=$(echo ${1} | cut -d_ -f3)
+}
+
+check_list() {
+	local cmd name type result
+
+	name=$1
+	type=$2
+	cmd=$3
+
+	for result in ${name}_${type}_list; do
+		[[ "${result}" == "${cmd}" ]] && return 0
+	done
+
+	Fatal "Command ${cmd} not exits in ${name}_${type}"
 }
