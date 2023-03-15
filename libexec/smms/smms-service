@@ -28,8 +28,26 @@ start_services() {
 
 	for s in "${start[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
-			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
+				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				SMMS_SERVICE start "${s}"
+			fi
+		done
+	done
+}
+
+restart_services() {
+	local service s
+
+	for s in "${restart[@]}"; do
+		for service in "${SMMS_SERVICES[@]}"; do
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
+				if [[ $(${service}_service_status "${s}") ]]; then
+					print_warn "Service ${s} has an incorrect configuration"
+				else
+					SMMS_SERVICE stop "${s}"
+					SMMS_SERVICE start "${s}"
+				fi
 			fi
 		done
 	done
@@ -38,9 +56,10 @@ start_services() {
 stop_services() {
 	local service s
 
-	for s in "${start[@]}"; do
+	for s in "${stop[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
-			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
+				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				SMMS_SERVICE stop "${s}"
 			fi
 		done
@@ -50,9 +69,14 @@ stop_services() {
 reload_services() {
 	local service s
 
-	for s in "${start[@]}"; do
+	for s in "${reload[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
-			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]] && [[ $(${service}_service_status "${s}") ]]; then
+			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
+				if [[ $(${service}_service_status "${s}") ]]; then
+					print_warn "Service ${s} has an incorrect configuration"
+					continue
+				fi
+
 				SMMS_SERVICE reload "${s}"
 			fi
 		done
@@ -62,7 +86,7 @@ reload_services() {
 check_services() {
 	local service s
 
-	for s in "${start[@]}"; do
+	for s in "${check[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if [[ $(SMMS_SERVICE_LIST "${service}" "${s}") ]]; then
 				if $(${service}_service_status "${list}"); then

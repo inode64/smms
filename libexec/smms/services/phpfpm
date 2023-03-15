@@ -11,7 +11,7 @@ phpfpm_service_list() {
 		for PHP in php5.{0..6} php7.{0..4} php8.{0..4}; do
 			test -x "${PHP}" && (
 				echo "${PHP}"
-				[[ "$1" != "only" ]] && echo "php-fpm@$(getVersion "$PHP").service"
+				[[ "$1" != "only" ]] && echo "php-fpm@$(getVersion "$PHP") php-fpm@$(getVersion "$PHP").service"
 			)
 		done
 		;;
@@ -19,7 +19,7 @@ phpfpm_service_list() {
 		pushd "/lib/systemd/system/" &>/dev/null || return 1
 		for PHP in php-fpm@5.{0..6}.* php-fpm@7.{0..4}.* php-fpm@8.{0..4}.*; do
 			test -e "${PHP}" && (
-				echo "php-fpm@$(getVersion "$PHP").service"
+				echo "php-fpm@$(getVersion "$PHP") php-fpm@$(getVersion "$PHP").service"
 				[[ "$1" != "only" ]] && echo "${PHP}"
 			)
 		done

@@ -26,9 +26,11 @@ SMMS_SERVICE() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		/etc/init.d/$2 $1 && return
+		print_warn "Error in service $2 after run command $1"
 		;;
 	"${SMMS_INIT_SYSTEMD}")
 		systemctl $1 $2 && return
+		print_warn "Error in service $2 after run command $1"
 		;;
 	esac
 
