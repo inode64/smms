@@ -10,7 +10,7 @@
 #   Show the list the pythons versions to stdout
 #######################################
 apache_application_list() {
-	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	check_program "apache2"
 }
@@ -23,7 +23,7 @@ apache_application_list() {
 #   Show the name of application to stdout
 #######################################
 apache_application_name() {
-	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	echo "The Apache Web Server"
 }
@@ -36,7 +36,7 @@ apache_application_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 apache_application_status() {
-	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	applications_vv "$1" &>/dev/null
 }
@@ -49,7 +49,7 @@ apache_application_status() {
 #   Show the version of application to stdout
 #######################################
 apache_application_version() {
-	entry_function ${FUNCNAME} ${FUNCNAME[1]} "$@"
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	applications_vv "$1" | grep "Server version" | cut -d: -f2 | xargs
 }
