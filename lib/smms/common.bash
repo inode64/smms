@@ -5,14 +5,14 @@ export SMMS_VERSION='0.1.0'
 export SMMS_INIT_SYSTEMD="systemd"
 export SMMS_INIT_OPENRC="openrc"
 
-SMMS_OS_ALPINE="alpine"
-SMMS_OS_ARCH="arch"
-SMMS_OS_CENTOS="centos"
-SMMS_OS_DEBIAN="debian"
-SMMS_OS_GENTOO="gentoo"
-SMMS_OS_REDHAT="redhat"
-SMMS_OS_SUSE="suse"
-SMMS_OS_UBUNTU="ubuntu"
+declare -r SMMS_OS_ALPINE="alpine"
+declare -r SMMS_OS_ARCH="arch"
+declare -r SMMS_OS_CENTOS="centos"
+declare -r SMMS_OS_DEBIAN="debian"
+declare -r SMMS_OS_GENTOO="gentoo"
+declare -r SMMS_OS_REDHAT="redhat"
+declare -r SMMS_OS_SUSE="suse"
+declare -r SMMS_OS_UBUNTU="ubuntu"
 
 getDistro() {
 	cat /etc/*-release 2>/dev/null | tr "[:upper:]" "[:lower:]" | grep -Poi '(alpine|arch|centos|debian|gentoo|redhat|suse|ubuntu)' | uniq
@@ -174,7 +174,7 @@ entry_function() {
 	fi
 
 	if [[ "${type}" == "service" ]]; then
-		if [[ "${cmd}" == "cmd" ]] || [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "process" ]]|| [[ "${cmd}" == "status" ]] ; then
+		if [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "process" ]]|| [[ "${cmd}" == "status" ]] ; then
 			[[ ! "${3}" ]] && Fatal "La function ${name}_${type}_${cmd} need parameter"
 			check_list "${name}" "${type}" "${3}"
 		fi

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+declare -r SMMS_OPENRC_PATH="/etc/init.d"
+declare -r SMMS_SYSTEMD_PATH="/lib/systemd/system"
+
 SMMS_SERVICES=()
 for service in ${SMMS_ROOT}/libexec/smms/services/*; do
 	SMMS_SERVICES+=("$(basename "${service}")")
@@ -12,10 +15,10 @@ unset service
 SMMS_SERVICE_EXIXTS() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		test -x /etc/init.d/$1 && return
+		test -x "${SMMS_OPENRC_PATH}/$1" && return
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		test -e /lib/systemd/system/$1 && return
+		test -e "${SMMS_SYSTEMD_PATH}/$1" && return
 		;;
 	esac
 
@@ -25,7 +28,7 @@ SMMS_SERVICE_EXIXTS() {
 SMMS_SERVICE() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		/etc/init.d/$2 $1 && return
+		${SMMS_OPENRC_PATH}/$2 $1 && return
 		print_warn "Error in service $2 after run command $1"
 		;;
 	"${SMMS_INIT_SYSTEMD}")
