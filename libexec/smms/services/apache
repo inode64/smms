@@ -6,19 +6,18 @@ apache_service_list() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		test -x ${SMMS_OPENRC_PATH}/apache2 && (
-			echo apache2
-			[[ "$1" != "only" ]] && echo apache2.service
+			echo "apache2 apache2.service)"
 		)
 		;;
 	"${SMMS_INIT_SYSTEMD}")
 		test -e ${SMMS_SYSTEMD_PATH}/apache2.service && (
-			echo apache2.service
-			[[ "$1" != "only" ]] && echo apache2
+			echo "apache2.service apache2"
 		)
 		;;
 	esac
 }
 
+# shellcheck disable=SC2120
 apache_service_cmd() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 

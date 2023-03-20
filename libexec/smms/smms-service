@@ -9,10 +9,11 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
 check_all_services() {
-	local service
+	local line service
 
 	for service in "${SMMS_SERVICES[@]}"; do
-		for list in $(${service}_service_list only); do
+		${service}_service_list | while read -r line; do
+			list=$(echo "${line}" | awk '{print $1}')
 			echo -n "$(${service}_service_name) | ${list} | $(${service}_service_info "${list}") | status "
 			if ${service}_service_status "${list}"; then
 				echo "ok"

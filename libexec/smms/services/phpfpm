@@ -9,13 +9,13 @@ phpfpm_service_list() {
 	"${SMMS_INIT_OPENRC}")
 		pushd "${SMMS_OPENRC_PATH}" &>/dev/null || return 1
 		for PHP in php5.{0..6} php7.{0..4} php8.{0..4}; do
-			test -x "${PHP}" && echo "${PHP} php-fpm@$(getVersion "$PHP").service php-fpm@$(getVersion "$PHP")"
+			test -x "${PHP}" && echo "${PHP} $(SYSTEMD_SERVICE_ALIAS "php-fpm@$(getVersion "$PHP")")"
 		done
 		;;
 	"${SMMS_INIT_SYSTEMD}")
 		pushd "${SMMS_SYSTEMD_PATH}" &>/dev/null || return 1
 		for PHP in php-fpm@5.{0..6}.service php-fpm@7.{0..4}.service php-fpm@8.{0..4}.service; do
-			test -e "${PHP}" && echo "${PHP} php-fpm@$(getVersion "$PHP") php$(getVersion "$PHP")"
+			test -e "${PHP}" && echo "$(SYSTEMD_SERVICE_ALIAS "${PHP}") php$(getVersion "$PHP")"
 		done
 		;;
 	esac
@@ -58,10 +58,10 @@ phpfpm_service_status() {
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		${SMMS_OPENRC_PATH}/${1} configtest &>/dev/null && return
+		run_cmd "${SMMS_OPENRC_PATH}/${1}" "configtest &>/dev/null" && return
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		$(phpfpm_service_cmd "$1") -t -y /etc/php/fpm-php$(getVersion "$1")/php-fpm.conf &>/dev/null && return
+		run_cmd "$(phpfpm_service_cmd "$1")" "-t -y /etc/php/fpm-php$(getVersion "$1")/php-fpm.conf &>/dev/null" && return
 		;;
 	esac
 

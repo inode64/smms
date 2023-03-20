@@ -203,5 +203,5 @@ run_cmd() {
 
 	[[ "${debug:?}" = 'true' ]] && print_info "cmd: ${cmd} , args: $*"
 
-	${cmd} $*
+	eval "${cmd}" "$*"
 }
