@@ -194,3 +194,14 @@ check_list() {
 
 	Fatal "Command ${cmd} not exits in ${name}_${type}"
 }
+
+run_cmd() {
+	local cmd
+
+	cmd=$(WHICH "$1")
+	shift
+
+	[[ "${debug:?}" = 'true' ]] && print_info "cmd: ${cmd} , args: $*"
+
+	${cmd} $*
+}

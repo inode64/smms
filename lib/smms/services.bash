@@ -41,13 +41,11 @@ SMMS_SERVICE() {
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		print_info "${SMMS_OPENRC_PATH}/${service} ${cmd}"
-		${SMMS_OPENRC_PATH}/${service} ${cmd} && return
+		run_cmd "${SMMS_OPENRC_PATH}/${service}" "${cmd}" && return
 		print_warn "Error in service $2 after run command $1"
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		print_info "systemctl ${service} ${cmd}"
-		systemctl ${cmd} ${service} && return
+		run_cmd "${cmd}" "${service}" && return
 		print_warn "Error in service $2 after run command $1"
 		;;
 	esac
