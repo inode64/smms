@@ -39,11 +39,26 @@ SMMS_SERVICE() {
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
+	[[ $(MonitStatus) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
+		$(WHICH "monit") "${cmd}" "${service}"
+		return
+	)
+
+	SMMS_SERVICE_CMD $1 $2 $3
+
+	[[ "${cmd}" == "stop" ]] && [[ "$(InitSystem)" == "${SMMS_INIT_OPENRC}" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
+}
+
+SMMS_SERVICE_CMD() {
+	local cmd service
+	cmd="$2"
+	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
+
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		run_cmd "${SMMS_OPENRC_PATH}/${service}" "${cmd}" && return
 		print_warn "Error in service $2 after run command $1"
-		# always zap openrc service after stop
+		# always zap openrc service after stop in error case, after we kill all process
 		[[ "${cmd}" == "stop" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
 		;;
 	"${SMMS_INIT_SYSTEMD}")

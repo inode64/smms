@@ -8,7 +8,6 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 # shellcheck source=./../../lib/smms/services.bash
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
-
 check_applicacions() {
 	local app
 
@@ -39,7 +38,6 @@ check_all_services() {
 		done
 	done
 }
-
 
 # Parse command line options.
 opt_parse() {

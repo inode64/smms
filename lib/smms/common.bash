@@ -205,3 +205,23 @@ run_cmd() {
 
 	eval "${cmd}" "$*"
 }
+
+MonitExits() {
+	local cmd
+	cmd=$(WHICH "monit")
+
+	test -x "${cmd}"
+}
+
+CallFromMonit() {
+	MonitExits || return
+
+	print_info "Monit is installed"
+
+	grep -aq "$(WHICH monit)" /proc/${PPID}/cmdline &>/dev/null
+}
+
+MonitStatus() {
+	CallFromMonit && return
+	$(WHICH monit) status ${1} &>/dev/null
+}
