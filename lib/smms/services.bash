@@ -83,8 +83,13 @@ SMMS_SERVICE_LIST() {
 }
 
 SYSTEMD_SERVICE_ALIAS() {
-	local alias
+	local alias service order
 
+	service="$1"
+	order="$2"
+
+	# todo finish
+	
 	echo "$1" | grep -q "\.\(target\|socket\|timer\|wants\|mount\|path\|slice\|automount\)$" && (
 		echo -n "$1"
 		return
