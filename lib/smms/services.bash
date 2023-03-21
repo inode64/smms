@@ -89,7 +89,7 @@ SYSTEMD_SERVICE_ALIAS() {
 	order="$2"
 
 	# todo finish
-	
+
 	echo "$1" | grep -q "\.\(target\|socket\|timer\|wants\|mount\|path\|slice\|automount\)$" && (
 		echo -n "$1"
 		return
