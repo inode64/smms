@@ -17,7 +17,7 @@ start_services() {
 				[[ "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is running"
 				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				SMMS_SERVICE "${service}" start "${s}"
-				continue
+				break
 			fi
 		done
 	done
@@ -36,7 +36,7 @@ restart_services() {
 					SMMS_SERVICE "${service}" stop "${s}"
 					SMMS_SERVICE "${service}" start "${s}"
 				fi
-				continue
+				break
 			fi
 		done
 	done
@@ -51,7 +51,7 @@ stop_services() {
 				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				[[ ! "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is stopped"
 				SMMS_SERVICE "${service}" stop "${s}"
-				continue
+				break
 			fi
 		done
 	done
@@ -70,7 +70,7 @@ reload_services() {
 				fi
 
 				SMMS_SERVICE "${service}" reload "${s}"
-				continue
+				break
 			fi
 		done
 	done
@@ -87,7 +87,7 @@ status_services() {
 				else
 					print_info "Service ${s} has an incorrect configuration"
 				fi
-				continue
+				break
 			fi
 		done
 	done
