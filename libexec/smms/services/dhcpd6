@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+dhcpd6_service_list() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		test -x ${SMMS_OPENRC_PATH}/dhcpd && echo "dhcpd dhcpd6.service"
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		test -e ${SMMS_SYSTEMD_PATH}/dhcpd6.service && echo "dhcpd6.service dhcpd"
+		;;
+	esac
+}
+
+# shellcheck disable=SC2120
+dhcpd6_service_cmd() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	dhcpd_application_list
+}
+
+dhcpd6_service_name() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	echo "DHCPv6 Server Daemon"
+}
+
+dhcpd6_service_info() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_vv "$(dhcpd6_service_cmd)"
+}
+
+dhcpd6_service_process() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	pgrep "$1"
+}
+
+dhcpd6_service_status() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	local mods
+
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		${SMMS_OPENRC_PATH}/dhcpd configtest &>/dev/null && return
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		case "$(getDistro)" in
+		"${SMMS_OS_GENTOO}")
+			mods="$(grep ^dhcpd2_OPTS= /etc/conf.d/dhcpd | cut -d\" -f2)"
+			;;
+		esac
+
+		dhcpd6_application_list "${mods}" -t &>/dev/null && return
+		;;
+	esac
+
+	return 1
+}

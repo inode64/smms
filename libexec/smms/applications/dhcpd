@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# Dbus functions
+
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the pythons versions to stdout
+#######################################
+dhcpd_application_list() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	check_program "dbus-daemon"
+}
+
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
+dhcpd_application_name() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	echo "DHCP Server Daemon"
+}
+
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
+dhcpd_application_status() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_version "$1" &>/dev/null
+}
+
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
+dhcpd_application_version() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_version "$1" | head -1
+}
