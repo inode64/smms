@@ -8,21 +8,6 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 # shellcheck source=./../../lib/smms/services.bash
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
-check_all_services() {
-	local line service
-
-	for service in "${SMMS_SERVICES[@]}"; do
-		${service}_service_list | while read -r line; do
-			list=$(echo "${line}" | awk '{print $1}')
-			echo -n "$(${service}_service_name) | ${list} | $(${service}_service_info "${list}") | status "
-			if ${service}_service_status "${list}"; then
-				echo "ok"
-			else
-				echo "fail"
-			fi
-		done
-	done
-}
 
 start_services() {
 	local service s
@@ -44,7 +29,7 @@ restart_services() {
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
 				if ${service}_service_status "${s}"; then
-					print_warn "Service ${s} has an incorrect configuration"
+					print_error "Service ${s} has an incorrect configuration"
 				else
 					SMMS_SERVICE stop "${s}"
 					SMMS_SERVICE start "${s}"
@@ -84,10 +69,10 @@ reload_services() {
 	done
 }
 
-check_services() {
+status_services() {
 	local service s
 
-	for s in "${check[@]}"; do
+	for s in "${status[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
 				if $(${service}_service_status "${list}"); then
@@ -100,6 +85,7 @@ check_services() {
 	done
 }
 
+
 # Parse command line options.
 opt_parse() {
 	SEP="$(printf '\037')"
@@ -107,10 +93,6 @@ opt_parse() {
 	while [ "${#}" -gt '0' ]; do
 		case "${1?}" in
 		# Short options that accept a value need a "*" in their pattern because they can be found in the "-A<value>" form.
-		'check_services' | 'check_srv')
-			services="true"
-			break
-			;;
 		'start')
 			if [ "${#}" -eq '1' ]; then
 				optDie "No services to start"
@@ -155,13 +137,13 @@ opt_parse() {
 			done
 			return
 			;;
-		'check')
+		'status')
 			if [ "${#}" -eq '1' ]; then
 				optDie "No services to check"
 			fi
 			shift
 			while [ "${#}" -gt '0' ]; do
-				check+=("${1?}")
+				status+=("${1?}")
 				shift
 			done
 			return
@@ -250,8 +232,16 @@ HELP_TEXT_HEADER
 	cat <<'HELP_TEXT_BODY'
    SMMS OPTIONS:
 	    ACTIONS:
-	     check_applications | check_app
-	        List the active applications in the system
+	     stop
+	        Stop (deactivate) one or more services specified
+	     start
+	        Start (activate) one or more services specified
+	     restart
+	        Stop and then start one or more services specified if it is ok
+	     reload
+	        Reload their configuration of one or more services specified
+	     status
+	        Show runtime status information about of one or more services specified
 
 	    MISC OPTIONS:
 	     --[no-]debug
@@ -283,8 +273,7 @@ main() {
 	stop=()
 	reload=()
 	restart=()
-	check=()
-	services="false"
+	status=()
 	debug="false"
 	quiet="false"
 	color="true"
@@ -329,17 +318,14 @@ main() {
 		reload_services
 	fi
 
-	if [ "${check[@]}" ]; then
-		check_services
+	if [ "${status[@]}" ]; then
+		status_services
 	fi
 
 	if [ "${restart[@]}" ]; then
 		restart_services
 	fi
 
-	if [ "${services:?}" = "true" ]; then
-		check_all_services
-	fi
 }
 
 main "${@-}"
