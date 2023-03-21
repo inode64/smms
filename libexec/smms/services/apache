@@ -6,7 +6,7 @@ apache_service_list() {
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
 		test -x ${SMMS_OPENRC_PATH}/apache2 && (
-			echo "apache2 apache2.service)"
+			echo "apache2 apache2.service"
 		)
 		;;
 	"${SMMS_INIT_SYSTEMD}")
