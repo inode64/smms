@@ -210,15 +210,24 @@ MonitExits() {
 	local cmd
 	cmd=$(WHICH "monit")
 
-	test -x "${cmd}"
+	test -x "${cmd}" && (
+		print_info "Monit is installed"
+		return
+	)
+
+	print_info "Monit isn't installed"
+	return 1
 }
 
 CallFromMonit() {
 	MonitExits || return
 
-	print_info "Monit is installed"
+	grep -aq "$(WHICH monit)" /proc/${PPID}/cmdline &>/dev/null && (
+		print_info "Call from monit"
+		return
+	)
 
-	grep -aq "$(WHICH monit)" /proc/${PPID}/cmdline &>/dev/null
+	return 1
 }
 
 MonitStatus() {
