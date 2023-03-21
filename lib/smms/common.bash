@@ -231,6 +231,5 @@ CallFromMonit() {
 }
 
 MonitStatus() {
-	CallFromMonit && return
 	$(WHICH monit) status ${1} &>/dev/null
 }

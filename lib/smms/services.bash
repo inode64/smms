@@ -39,7 +39,8 @@ SMMS_SERVICE() {
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
-	[[ $(MonitStatus) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
+	[[ $(MonitStatus) ]] && [[ ! $(MonitExits) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
+		print_info "Exec into monit"
 		$(WHICH "monit") "${cmd}" "${service}"
 		return
 	)
