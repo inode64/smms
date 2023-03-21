@@ -32,6 +32,7 @@ restart_services() {
 					print_error "Service ${s} has an incorrect configuration"
 				else
 					SMMS_SERVICE "${service}" stop "${s}"
+					SMMS_SERVICE_KILL "${service}" "${s}"
 					SMMS_SERVICE "${service}" start "${s}"
 				fi
 			fi
@@ -47,6 +48,7 @@ stop_services() {
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
 				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				SMMS_SERVICE "${service}" stop "${s}"
+				SMMS_SERVICE_KILL "${service}" "${s}"
 			fi
 		done
 	done

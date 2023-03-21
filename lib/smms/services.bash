@@ -74,3 +74,38 @@ SYSTEMD_SERVICE_ALIAS() {
 	alias=${1/\.service/}
 	echo "$1" | grep -q "\.service$" && echo -n "$1 ${alias}" || echo -n "$1.service ${alias}"
 }
+
+SMMS_SERVICE_KILL() {
+	local p pids s try
+
+	s=$1
+	p=$2
+	try=4
+
+	while true; do
+		[[ "${debug:?}" = 'true' ]] && print_info "Try ${try}, kill process: ${p}"
+
+		pids=$(${s}_service_process "${p}")
+		# check if all process are stopped
+		[[ ! "${pids}" ]] && return
+
+		sleep 1
+
+		pids=$(${s}_service_process "${p}")
+		[[ ! "${pids}" ]] && return
+
+		[[ "${debug:?}" = 'true' ]] && print_info "Kill process: ${p}, ${pids//[$'\t\r\n']/ }"
+
+		kill ${pids}
+
+		((--try)) || break
+	done
+
+	# Force kill process
+	pids=$(${s}_service_process "${p}")
+	[[ ! "${pids}" ]] && return
+
+	[[ "${debug:?}" = 'true' ]] && print_info "Kill -9 process : ${p} , ${pids}"
+
+	kill -9 ${pids}
+}
