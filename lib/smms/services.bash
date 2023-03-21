@@ -45,7 +45,7 @@ SMMS_SERVICE() {
 		print_warn "Error in service $2 after run command $1"
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		run_cmd "${cmd}" "${service}" && return
+		run_cmd systemctl "${cmd}" "${service}" && return
 		print_warn "Error in service $2 after run command $1"
 		;;
 	esac
