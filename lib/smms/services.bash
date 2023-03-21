@@ -27,7 +27,7 @@ SMMS_SERVICE_EXIXTS() {
 
 SMMS_SERVICE_MAIN() {
 	${1}_service_list | while read -r line; do
-		echo "${line}" | grep -q "$2" && echo "${line}" | awk '{print $2}'
+		echo "${line}" | grep -q "$2" && echo "${line}" | awk '{print $1}'
 	done
 
 	# Need for continue normal process
