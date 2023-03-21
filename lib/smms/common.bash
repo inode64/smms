@@ -227,5 +227,5 @@ CallFromMonit() {
 MonitStatus() {
 	MonitExits || return 1
 
-	$(WHICH monit) status ${1} &>/dev/null
+	$(WHICH monit) status ${1} 2>/dev/null
 }
