@@ -47,6 +47,8 @@ SMMS_SERVICE() {
 	SMMS_SERVICE_CMD $1 $2 $3
 
 	[[ "${cmd}" == "stop" ]] && [[ "$(InitSystem)" == "${SMMS_INIT_OPENRC}" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
+
+	[[ "${cmd}" == "stop" ]] && SMMS_SERVICE_KILL "$1" "$3"
 }
 
 SMMS_SERVICE_CMD() {
@@ -112,6 +114,7 @@ SMMS_SERVICE_KILL() {
 		[[ ! "${pids}" ]] && return
 
 		[[ "${debug:?}" = 'true' ]] && print_info "Kill process: ${p}, ${pids//[$'\t\r\n']/ }"
+		[[ "${debug:?}" = 'true' ]] && print_info "Kill process: ${p}, $(ps ${pids//[$'\t\r\n']/ })"
 
 		kill ${pids}
 
@@ -123,6 +126,7 @@ SMMS_SERVICE_KILL() {
 	[[ ! "${pids}" ]] && return
 
 	[[ "${debug:?}" = 'true' ]] && print_info "Kill -9 process : ${p} , ${pids}"
+	[[ "${debug:?}" = 'true' ]] && print_info "Kill -9 process: ${p}, $(ps ${pids//[$'\t\r\n']/ })"
 
 	kill -9 ${pids}
 }

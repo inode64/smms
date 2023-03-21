@@ -14,6 +14,7 @@ start_services() {
 	for s in "${start[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
+				[[ "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is running"
 				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
 				SMMS_SERVICE "${service}" start "${s}"
 			fi
@@ -27,11 +28,11 @@ restart_services() {
 	for s in "${restart[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
+				[[ ! "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is stopped"
 				if ! ${service}_service_status "${s}"; then
 					print_error "Service ${s} has an incorrect configuration"
 				else
 					SMMS_SERVICE "${service}" stop "${s}"
-					SMMS_SERVICE_KILL "${service}" "${s}"
 					SMMS_SERVICE "${service}" start "${s}"
 				fi
 			fi
@@ -46,8 +47,8 @@ stop_services() {
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
 				[[ $(${service}_service_status "${s}") ]] && print_warn "Service ${s} has an incorrect configuration"
+				[[ ! "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is stopped"
 				SMMS_SERVICE "${service}" stop "${s}"
-				SMMS_SERVICE_KILL "${service}" "${s}"
 			fi
 		done
 	done
@@ -59,6 +60,7 @@ reload_services() {
 	for s in "${reload[@]}"; do
 		for service in "${SMMS_SERVICES[@]}"; do
 			if SMMS_SERVICE_LIST "${service}" "${s}"; then
+				[[ ! "$(${service}_service_process "${s}")" ]] && print_warn "Service ${s} is stopped"
 				if ! ${service}_service_status "${s}"; then
 					print_warn "Service ${s} has an incorrect configuration"
 					continue
@@ -325,7 +327,6 @@ main() {
 	if [ "${restart[@]}" ]; then
 		restart_services
 	fi
-
 }
 
 main "${@-}"

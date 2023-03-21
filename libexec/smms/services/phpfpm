@@ -51,6 +51,9 @@ phpfpm_service_process() {
 	grep -ae '^\[' /etc/php/fpm-php$(getVersion "$1")/fpm.d/*.conf | cut -d\[ -f2 | cut -d\] -f1 | while read -r pool; do
 		pgrep "pool ${pool}" -f
 	done
+
+	# Need for continue normal process
+	echo
 }
 
 phpfpm_service_status() {
