@@ -39,7 +39,7 @@ SMMS_SERVICE() {
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
-	[[ $(MonitStatus "${service}") ]] && [[ ! $(CallFromMonit) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
+	([[ $(MonitStatus "${service}") ]] && [[ ! $(CallFromMonit) ]]) && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
 		[[ "${debug:?}" = 'true' ]] && print_info "Exec into monit"
 		$(WHICH "monit") "${cmd}" "${service}"
 	) || (
@@ -113,7 +113,6 @@ SMMS_SERVICE_KILL() {
 		pids=$(${s}_service_process "${p}")
 		[[ ! "${pids}" ]] && return
 
-		[[ "${debug:?}" = 'true' ]] && print_info "Kill process: ${p}, ${pids//[$'\t\r\n']/ }"
 		[[ "${debug:?}" = 'true' ]] && print_info "Kill process: ${p}, $(ps ${pids//[$'\t\r\n']/ })"
 
 		kill ${pids}
@@ -125,7 +124,6 @@ SMMS_SERVICE_KILL() {
 	pids=$(${s}_service_process "${p}")
 	[[ ! "${pids}" ]] && return
 
-	[[ "${debug:?}" = 'true' ]] && print_info "Kill -9 process : ${p} , ${pids}"
 	[[ "${debug:?}" = 'true' ]] && print_info "Kill -9 process: ${p}, $(ps ${pids//[$'\t\r\n']/ })"
 
 	kill -9 ${pids}
