@@ -42,7 +42,6 @@ SMMS_SERVICE() {
 	[[ $(MonitStatus "${service}") ]] && [[ ! $(CallFromMonit) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
 		[[ "${debug:?}" = 'true' ]] && print_info "Exec into monit"
 		$(WHICH "monit") "${cmd}" "${service}"
-		return
 	) || (
 		SMMS_SERVICE_CMD $1 $2 $3
 
