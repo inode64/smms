@@ -39,17 +39,17 @@ SMMS_SERVICE() {
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
-	[[ $(MonitStatus) ]] && [[ ! $(CallFromMonit) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
-		print_info "Exec into monit"
+	[[ $(MonitStatus "${service}") ]] && [[ ! $(CallFromMonit) ]] && ([[ "${cmd}" == "stop" ]] || [[ "${cmd}" == "start" ]]) && (
+		[[ "${debug:?}" = 'true' ]] && print_info "Exec into monit"
 		$(WHICH "monit") "${cmd}" "${service}"
 		return
+	) || (
+		SMMS_SERVICE_CMD $1 $2 $3
+
+		[[ "${cmd}" == "stop" ]] && [[ "$(InitSystem)" == "${SMMS_INIT_OPENRC}" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
+
+		[[ "${cmd}" == "stop" ]] && SMMS_SERVICE_KILL "$1" "$3"
 	)
-
-	SMMS_SERVICE_CMD $1 $2 $3
-
-	[[ "${cmd}" == "stop" ]] && [[ "$(InitSystem)" == "${SMMS_INIT_OPENRC}" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
-
-	[[ "${cmd}" == "stop" ]] && SMMS_SERVICE_KILL "$1" "$3"
 }
 
 SMMS_SERVICE_CMD() {
