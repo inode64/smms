@@ -43,6 +43,7 @@ SMMS_SERVICE() {
 	"${SMMS_INIT_OPENRC}")
 		run_cmd "${SMMS_OPENRC_PATH}/${service}" "${cmd}" && return
 		print_warn "Error in service $2 after run command $1"
+		[[ "${cmd}" == "stop" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
 		;;
 	"${SMMS_INIT_SYSTEMD}")
 		run_cmd systemctl "${cmd}" "${service}" && return
