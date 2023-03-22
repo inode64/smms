@@ -162,3 +162,20 @@ SMMS_SERVICE_KILL() {
 
 	kill -9 ${pids}
 }
+
+SMMS_SERVICE_INIT() {
+	local init systemd openrc
+
+	systemd="$1"
+	openrc="$2"
+	init="$(InitSystem)"
+
+	case "${init}" in
+	"${SMMS_INIT_OPENRC}")
+		test -x "${SMMS_OPENRC_PATH}/${openrc}" && SMMS_SERVICE_ORDER "${init}" "${systemd} ${openrc}"
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		test -e "${SMMS_SYSTEMD_PATH}/${systemd}" && SMMS_SERVICE_ORDER "${init}" "${systemd} ${openrc}"
+		;;
+	esac
+}

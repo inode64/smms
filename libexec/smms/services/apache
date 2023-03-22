@@ -3,14 +3,7 @@
 apache_service_list() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	case "$(InitSystem)" in
-	"${SMMS_INIT_OPENRC}")
-		test -x ${SMMS_OPENRC_PATH}/apache2 && SMMS_SERVICE_ORDER "${SMMS_INIT_OPENRC}" apache2.service apache2
-		;;
-	"${SMMS_INIT_SYSTEMD}")
-		test -e ${SMMS_SYSTEMD_PATH}/apache2.service && SMMS_SERVICE_ORDER "${SMMS_INIT_SYSTEMD}" apache2.service apache2
-		;;
-	esac
+	SMMS_SERVICE_INIT apache2.service apache2
 }
 
 # shellcheck disable=SC2120
