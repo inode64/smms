@@ -83,12 +83,7 @@ SMMS_SERVICE_LIST() {
 }
 
 SYSTEMD_SERVICE_ALIAS() {
-	local alias service order
-
-	service="$1"
-	order="$2"
-
-	# todo finish
+	local alias
 
 	echo "$1" | grep -q "\.\(target\|socket\|timer\|wants\|mount\|path\|slice\|automount\)$" && (
 		echo -n "$1"
@@ -97,6 +92,40 @@ SYSTEMD_SERVICE_ALIAS() {
 
 	alias=${1/\.service/}
 	echo "$1" | grep -q "\.service$" && echo -n "$1 ${alias}" || echo -n "$1.service ${alias}"
+}
+
+# order - arg1
+# systemd - arg2
+# openrc - arg3
+# ... - arg*
+SMMS_SERVICE_ORDER() {
+	local init systemd w w1 ws string
+
+	systemd=$(SYSTEMD_SERVICE_ALIAS "$2")
+	init=$1
+	declare -a string=()
+
+	shift
+	shift
+
+	case "$init" in
+	"${SMMS_INIT_OPENRC}")
+		ws="$* ${systemd}"
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		ws="${systemd} $*"
+		;;
+	esac
+
+	for w in ${ws}; do
+		for w1 in "${string[@]}"; do
+			[[ "${w1}" == "${w}" ]] && continue 2
+		done
+		# only insert the unique words
+		string+=("$w")
+	done
+
+	echo "${string[@]}"
 }
 
 SMMS_SERVICE_KILL() {

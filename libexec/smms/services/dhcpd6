@@ -5,10 +5,10 @@ dhcpd6_service_list() {
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		test -x ${SMMS_OPENRC_PATH}/dhcpd && echo "dhcpd dhcpd6.service"
+		test -x ${SMMS_OPENRC_PATH}/dhcpd && SMMS_SERVICE_ORDER "${SMMS_INIT_OPENRC}" dhcpd6.service dhcpd
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		test -e ${SMMS_SYSTEMD_PATH}/dhcpd6.service && echo "dhcpd6.service dhcpd"
+		test -e ${SMMS_SYSTEMD_PATH}/dhcpd6.service && SMMS_SERVICE_ORDER "${SMMS_INIT_SYSTEMD}" dhcpd5.service dhcpd
 		;;
 	esac
 }
