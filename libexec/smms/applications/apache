@@ -7,7 +7,7 @@
 # Arguments:
 #   None
 # Outputs:
-#   Show the list the pythons versions to stdout
+#   Show the list the command line versions to stdout
 #######################################
 apache_application_list() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
@@ -52,4 +52,17 @@ apache_application_version() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	applications_vv "$1" | grep "Server version" | cut -d: -f2 | xargs
+}
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+apache_application_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_cmd_monit apache "$1" www
 }

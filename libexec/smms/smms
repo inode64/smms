@@ -39,6 +39,23 @@ check_all_services() {
 	done
 }
 
+make_monit_config() {
+	local app line service
+
+	for app in "${SMMS_APPLICATIONS[@]}"; do
+		for list in $(${app}_application_list); do
+			${app}_application_monit "${list}"
+		done
+	done
+
+	for service in "${SMMS_SERVICES[@]}"; do
+		${service}_service_list | while read -r line; do
+			list=$(echo "${line}" | awk '{print $1}')
+			${service}_service_monit "${list}"
+		done
+	done
+}
+
 # Parse command line options.
 opt_parse() {
 	SEP="$(printf '\037')"
@@ -52,6 +69,10 @@ opt_parse() {
 			;;
 		'check_services' | 'check_srv')
 			services="true"
+			break
+			;;
+		'monit_config')
+			monit="true"
 			break
 			;;
 		'-q' | '--quiet' | '--no-quiet')
@@ -142,6 +163,8 @@ HELP_TEXT_HEADER
 	        List the active applications in the system
 	     check_services | check_srv
 	        List the active services in the system
+	     monit_config
+	        Make monit configuracion of active services in the system
 
 
 	    MISC OPTIONS:
@@ -172,6 +195,7 @@ show_version() {
 main() {
 	applications="false"
 	services="false"
+	monit="false"
 
 	debug="false"
 	quiet="false"
@@ -211,6 +235,10 @@ main() {
 
 	if [ "${services:?}" = "true" ]; then
 		check_all_services
+	fi
+
+	if [ "${monit:?}" = "true" ]; then
+		make_monit_config
 	fi
 }
 

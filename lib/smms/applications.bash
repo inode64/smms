@@ -16,6 +16,20 @@ applications_status() {
 	applications_version "$1" &>/dev/null
 }
 
+applications_cmd_monit() {
+	local name cmd group
+
+	name="$1"
+	cmd="$2"
+	group="$3"
+
+	cat << EOF
+check file ${name}_bin with path ${cmd}
+    group ${group}
+    if changed checksum then restart
+EOF
+}
+
 SMMS_APPLICATIONS=()
 for app in ${SMMS_ROOT}/libexec/smms/applications/*; do
 	SMMS_APPLICATIONS+=("$(basename "${app}")")

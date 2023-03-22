@@ -7,7 +7,7 @@
 # Arguments:
 #   None
 # Outputs:
-#   Show the list the pythons versions to stdout
+#   Show the list the command line versions to stdout
 #######################################
 fcron_application_list() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
@@ -52,4 +52,17 @@ fcron_application_version() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	applications_version "$1"
+}
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+fcron_application_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_cmd_monit fcron "$1" system
 }

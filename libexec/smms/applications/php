@@ -7,7 +7,7 @@
 # Arguments:
 #   None
 # Outputs:
-#   Show the list the pythons versions to stdout
+#   Show the list the command line versions to stdout
 #######################################
 php_application_list() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
@@ -56,4 +56,17 @@ php_application_version() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
 	applications_version "$1" | head -1
+}
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+php_application_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_cmd_monit $(basename "$1") "$1" www
 }
