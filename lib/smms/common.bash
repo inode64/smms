@@ -266,6 +266,8 @@ MonitMakeFile() {
 	type="$2"
 	name="$3"
 
+	[[ ! "${text}" ]] && return
+
 	[[ ! "${name}" ]] && name=$(echo "${FUNCNAME[1]}" | cut -d_ -f1)
 	[[ ! "${type}" ]] && type=$(echo "${FUNCNAME[1]}" | cut -d_ -f2)
 
@@ -294,4 +296,19 @@ MonitMakeFile() {
 	return
 
 	echo "${text}" >"${file}"
+}
+
+CheckTMPL() {
+	local name type model
+
+	model="$1"
+	type="$2"
+	name="$3"
+
+	[[ ! "${name}" ]] && name=$(echo "${FUNCNAME[1]}" | cut -d_ -f1)
+	[[ ! "${type}" ]] && type=$(echo "${FUNCNAME[1]}" | cut -d_ -f2)
+
+	[[ ! -e "$SMMS_ROOT/libexec/smms/${type}s/tmpl/${model}/${name}" ]] && return 1
+
+	cat "$SMMS_ROOT/libexec/smms/${type}s/tmpl/${model}/${name}"
 }

@@ -81,18 +81,20 @@ phpfpm_service_status() {
 phpfpm_service_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	local text name
+	local text name pid
 
 	name="$(echo ${FUNCNAME} | cut -d_ -f1)$(getVersion "${1}")"
 
-	text="check process ${name} with pidfile /run/php-fpm-php$(getVersion "${name}").pid
-    group www
-    start program = \"${SMMS_SERVICE_CMD} restart --no-deps ${name}\"
-    stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
-    if failed unixsocket /run/lock/php$(getVersion "${name}").sock for 3 cycles then restart
-    if total memory > {MEM_Alert} within 15 cycles then restart
-    depends on php$(getVersion "${name}")_bin
-"
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		pid="/run/php-fpm-php$(getVersion "${1}").pid"
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		pid="/run/php-fpm/php-fpm-$(getVersion "${1}").pid"
+		;;
+	esac
+
+	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")" )\" " )")
 
 	MonitMakeFile "${text}"
 }

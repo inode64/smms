@@ -68,12 +68,16 @@ dhcpd4_service_monit() {
 
 	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
 
-	text="check process dhcpd with pidfile /run/dhcp/dhcpd.pid
-    group system
-    start program = \"${SMMS_SERVICE_CMD} restart --no-deps ${name}\"
-    stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
-    if failed host 127.0.0.1 port 67 type udp for 5 cycles then restart
-    depends on dhcpd_bin
-"
+	case "$(InitSystem)" in
+	"${SMMS_INIT_OPENRC}")
+		pid="pidfile /run/dhcp/dhcpd.pid"
+		;;
+	"${SMMS_INIT_SYSTEMD}")
+		pid="matching dhcpd"
+		;;
+	esac
+
+	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")" )\" " )")
+
 	MonitMakeFile "${text}"
 }

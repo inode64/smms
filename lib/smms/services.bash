@@ -7,6 +7,7 @@ declare -r SMMS_SERVICE_CMD="${SMMS_ROOT}/smms-service"
 
 SMMS_SERVICES=()
 for service in ${SMMS_ROOT}/libexec/smms/services/*; do
+	[[ ! -f ${service} ]] && continue
 	SMMS_SERVICES+=("$(basename "${service}")")
 	# shellcheck source=libexec/smms/services/${service}
 	source "${service}"
