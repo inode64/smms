@@ -17,17 +17,21 @@ applications_status() {
 }
 
 applications_cmd_monit() {
-	local name cmd group
+	local name cmd group text
 
-	name="$1"
-	cmd="$2"
-	group="$3"
+	cmd="$1"
+	group="$2"
+	name="$3"
 
-	cat << EOF
+	[[ ! "${name}" ]] && name=$(echo "${FUNCNAME[1]}" | cut -d_ -f1)
+
+	text="
 check file ${name}_bin with path ${cmd}
     group ${group}
     if changed checksum then restart
-EOF
+"
+
+	MonitMakeFile "${text}" "${SMMS_APPLICATION}" "${name}"
 }
 
 SMMS_APPLICATIONS=()

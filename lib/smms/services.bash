@@ -3,6 +3,8 @@
 declare -r SMMS_OPENRC_PATH="/etc/init.d"
 declare -r SMMS_SYSTEMD_PATH="/lib/systemd/system"
 
+declare -r SMMS_SERVICE_CMD="${SMMS_ROOT}/smms-service"
+
 SMMS_SERVICES=()
 for service in ${SMMS_ROOT}/libexec/smms/services/*; do
 	SMMS_SERVICES+=("$(basename "${service}")")
@@ -36,6 +38,7 @@ SMMS_SERVICE_MAIN() {
 
 SMMS_SERVICE() {
 	local cmd service
+
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
@@ -52,19 +55,22 @@ SMMS_SERVICE() {
 }
 
 SMMS_SERVICE_CMD() {
-	local cmd service
+	local cmd service args
+
 	cmd="$2"
 	service="$(SMMS_SERVICE_MAIN "$1" "$3")"
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
-		run_cmd "${SMMS_OPENRC_PATH}/${service}" "${cmd}" && return
+		[[ "${deps:?}" = 'true' ]] && args=" --nodeps"
+		run_cmd "${SMMS_OPENRC_PATH}/${service}" "${args}" "${cmd}" && return
 		print_warn "Error in service $2 after run command $1"
 		# always zap openrc service after stop in error case, after we kill all process
 		[[ "${cmd}" == "stop" ]] && run_cmd "${SMMS_OPENRC_PATH}/${service}" zap
 		;;
 	"${SMMS_INIT_SYSTEMD}")
-		run_cmd systemctl "${cmd}" "${service}" && return
+		[[ "${deps:?}" = 'true' ]] && args=" --job-mode=ignore-requirements"
+		run_cmd systemctl "${args}" "${cmd}" "${service}" && return
 		print_warn "Error in service $2 after run command $1"
 		;;
 	esac

@@ -64,5 +64,5 @@ apache_application_version() {
 apache_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit apache "$1" www
+	applications_cmd_monit "$1" www
 }

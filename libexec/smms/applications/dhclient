@@ -64,5 +64,5 @@ dhclient_application_version() {
 dhclient_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit dhclient "$1" net
+	applications_cmd_monit "$1" net
 }

@@ -64,5 +64,5 @@ glibc_application_version() {
 glibc_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit glibc "$1" system
+	applications_cmd_monit "$1" system
 }

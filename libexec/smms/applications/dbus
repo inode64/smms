@@ -64,5 +64,5 @@ dbus_application_version() {
 dbus_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit dbus "$1" system
+	applications_cmd_monit "$1" system
 }

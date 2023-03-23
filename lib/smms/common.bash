@@ -14,6 +14,13 @@ declare -r SMMS_OS_REDHAT="redhat"
 declare -r SMMS_OS_SUSE="suse"
 declare -r SMMS_OS_UBUNTU="ubuntu"
 
+declare -r SMMS_MONIT="/etc/monit.d"
+declare -r SMMS_MONIT_APP="${SMMS_MONIT}/applications"
+declare -r SMMS_MONIT_SRV="${SMMS_MONIT}/services"
+
+declare -r SMMS_APPLICATION="application"
+declare -r SMMS_SERVICE="service"
+
 getDistro() {
 	cat /etc/*-release 2>/dev/null | tr "[:upper:]" "[:lower:]" | grep -Poi '(alpine|arch|centos|debian|gentoo|redhat|suse|ubuntu)' | uniq
 }
@@ -103,8 +110,30 @@ RemoveLock() {
 	return "${count}"
 }
 
-Ncpu() {
+NCPU() {
 	grep -c processor /proc/cpuinfo
+}
+
+CPU_Alert() {
+	local result
+
+	((result = 92 / $(NCPU)))
+	echo "${result}%"
+}
+
+CPU_Warning() {
+	local result
+
+	((result = 65 / $(NCPU)))
+	echo "${result}%"
+}
+
+MEM_Alert() {
+	echo "40%"
+}
+
+MEM_Warning() {
+	echo "20%"
 }
 
 InitSystem() {
@@ -163,17 +192,17 @@ entry_function() {
 	type=$(echo "${1}" | cut -d_ -f2)
 	cmd=$(echo "${1}" | cut -d_ -f3)
 
-	[[ "${type}" != "application" ]] && [[ "${type}" != "service" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
+	[[ "${type}" != "${SMMS_APPLICATION}" ]] && [[ "${type}" != "${SMMS_SERVICE}" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
 	[[ ! "${cmd}" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
 
-	if [[ "${type}" == "application" ]]; then
+	if [[ "${type}" == "${SMMS_APPLICATION}" ]]; then
 		if [[ "${cmd}" == "status" ]] || [[ "${cmd}" == "version" ]]; then
 			[[ ! "${3}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
 			check_list "${name}" "${type}" "${3}"
 		fi
 	fi
 
-	if [[ "${type}" == "service" ]]; then
+	if [[ "${type}" == "${SMMS_SERVICE}" ]]; then
 		if [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "process" ]] || [[ "${cmd}" == "status" ]]; then
 			[[ ! "${3}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
 			check_list "${name}" "${type}" "${3}"
@@ -228,4 +257,41 @@ MonitStatus() {
 	MonitExits || return 1
 
 	$(WHICH monit) status ${1} &>/dev/null
+}
+
+MonitMakeFile() {
+	local name type text file
+
+	text="$1"
+	type="$2"
+	name="$3"
+
+	[[ ! "${name}" ]] && name=$(echo "${FUNCNAME[1]}" | cut -d_ -f1)
+	[[ ! "${type}" ]] && type=$(echo "${FUNCNAME[1]}" | cut -d_ -f2)
+
+	case "${type}" in
+	"${SMMS_APPLICATION}")
+		test -e "${SMMS_MONIT_APP}.local/${name}" && return
+		file="${SMMS_MONIT_APP}/${name}"
+		;;
+	"${SMMS_SERVICE}")
+		test -e "${SMMS_MONIT_SRV}.local/${name}" && return
+		file="${SMMS_MONIT_SRV}/${name}"
+		;;
+	*)
+		Fatal "This function can only be used from functions of applications or services."
+		;;
+	esac
+
+	text="${text//\{NCPU\}/$(NCPU)}"
+	text="${text//\{CPU_ALERT\}/$(CPU_Alert)}"
+	text="${text//\{CPU_WARNING\}/$(CPU_Warning)}"
+
+	text="${text//\{MEM_ALERT\}/$(MEM_Alert)}"
+	text="${text//\{MEM_WARNING\}/$(MEM_Warning)}"
+
+	echo -e "${text}"
+	return
+
+	echo "${text}" >"${file}"
 }

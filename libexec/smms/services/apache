@@ -53,3 +53,43 @@ apache_service_status() {
 
 	return 1
 }
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+apache_service_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	local text name
+
+	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
+
+	text="check process apache with pidfile /run/apache2.pid
+    group www
+    start program = \"${SMMS_SERVICE_CMD} restart --no-deps ${name}\"
+    stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
+#    if failed host 127.0.0.1 port {PORT}
+#          protocol apache-status  dnslimit > 25% or
+#                                  loglimit > 80% or
+#                                  waitlimit < 20%
+#          then alert
+    if total cpu > {CPU_ALERT} for 5 cycles then restart
+    if failed host 127.0.0.1 port 80 protocol http
+       and request "/monit_token"
+       for 3 cycles then restart
+#    if failed host 127.0.0.1 port 443 type tcpssl protocol http
+#       with timeout 15 seconds
+#       then restart
+    depends on apache_bin
+
+check file apache_bin with path /usr/sbin/apache2
+    group www
+    if changed checksum then restart
+"
+
+	MonitMakeFile "${text}"
+}

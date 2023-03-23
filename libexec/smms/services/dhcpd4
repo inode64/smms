@@ -53,3 +53,27 @@ dhcpd4_service_status() {
 
 	return 1
 }
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+dhcpd4_service_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	local text name
+
+	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
+
+	text="check process dhcpd with pidfile /run/dhcp/dhcpd.pid
+    group system
+    start program = \"${SMMS_SERVICE_CMD} restart --no-deps ${name}\"
+    stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
+    if failed host 127.0.0.1 port 67 type udp for 5 cycles then restart
+    depends on dhcpd_bin
+"
+	MonitMakeFile "${text}"
+}

@@ -155,6 +155,10 @@ opt_parse() {
 			done
 			return
 			;;
+		'--deps' | '--no-deps')
+			optArgBool "${@-}"
+			deps="${optArg:?}"
+			;;
 		'-q' | '--quiet' | '--no-quiet')
 			optArgBool "${@-}"
 			quiet="${optArg:?}"
@@ -251,6 +255,9 @@ HELP_TEXT_HEADER
 	        Show runtime status information about of one or more services specified
 
 	    MISC OPTIONS:
+	     --[no-]deps
+	     	is specified, then all unit dependencies are ignored for this new job and the operation is executed immediately
+	        (default: ${deps?})%NL
 	     --[no-]debug
 	        Show the commands to run.
 	        (default: ${debug?})%NL
@@ -284,6 +291,7 @@ main() {
 	debug="false"
 	quiet="false"
 	color="true"
+	deps="false"
 
 	# Parse command line options.
 	# shellcheck disable=SC2086

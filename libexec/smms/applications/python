@@ -68,5 +68,5 @@ python_application_version() {
 python_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit $(basename "$1") "$1" system
+	applications_cmd_monit "$1" system "$(basename "$1")"
 }

@@ -64,5 +64,5 @@ dhcpd_application_version() {
 dhcpd_application_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	applications_cmd_monit dhcpd "$1" net
+	applications_cmd_monit "$1" net
 }
