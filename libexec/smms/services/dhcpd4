@@ -77,7 +77,7 @@ dhcpd4_service_monit() {
 		;;
 	esac
 
-	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")" )\" " )")
+	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"
 }

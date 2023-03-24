@@ -68,7 +68,7 @@ apache_service_monit() {
 
 	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
 
-	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")" )\" " )")
+	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"
 }

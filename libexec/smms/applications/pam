@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+#
+# pam functions
+
+#######################################
+# Check if application exist in the system
+# Arguments:
+#   None
+# Outputs:
+#   Show the list the command line versions to stdout
+#######################################
+pam_application_list() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	check_program "/lib64/libpam.so.0"
+}
+
+#######################################
+# Show the name of application
+# Arguments:
+#   None
+# Outputs:
+#   Show the name of application to stdout
+#######################################
+pam_application_name() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	echo "Linux-PAM (Pluggable Authentication Modules)"
+}
+
+#######################################
+# Show the name of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   0 if application in run fine, non-zero application have a problem
+#######################################
+pam_application_status() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	/sbin/pam_namespace_helper &>/dev/null
+}
+
+#######################################
+# Show the version of application
+# Arguments:
+#   command to check for one returned from the list of the xxxx_list function
+# Outputs:
+#   Show the version of application to stdout
+#######################################
+pam_application_version() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	echo "$(getVersion "$(basename "$(smms_readlinkf "$1")")")"
+}
+
+#######################################
+# Generate the necessary code for the monit configuration
+# Arguments:
+#   one command returned from the list of the xxxx_list function
+# Outputs:
+#   Show monit code
+#######################################
+pam_application_monit() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	applications_cmd_monit "$1" system
+}
