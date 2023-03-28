@@ -186,3 +186,7 @@ SMMS_SERVICE_INIT() {
 		;;
 	esac
 }
+
+SMMS_SERVICE_DEPS() {
+	echo "depends on php$(getVersion "${name}")_bin"
+}
