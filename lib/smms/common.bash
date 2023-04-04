@@ -144,8 +144,6 @@ InitSystem() {
 	if test -d /run/openrc; then
 		echo ${SMMS_INIT_OPENRC}
 	fi
-
-	return
 }
 
 print_info() { [ -n "${NO_STDOUT+x}" ] || printf "${COLOR_RESET-}[${COLOR_BGREEN-}INFO${COLOR_RESET-}] %s\n" "${@-}" >&2; }
