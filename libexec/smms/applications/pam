@@ -66,3 +66,9 @@ pam_application_monit() {
 
 	applications_cmd_monit "$1" system
 }
+
+pam_application_lib() {
+	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+
+	pam_application_list
+}
