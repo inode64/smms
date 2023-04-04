@@ -14,4 +14,4 @@ check process apache with pidfile /run/apache2.pid
 #    if failed host 127.0.0.1 port 443 type tcpssl protocol http
 #       with timeout 15 seconds
 #       then restart
-    depends on apache_bin
+${deps}

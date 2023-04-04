@@ -64,10 +64,11 @@ apache_service_status() {
 apache_service_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	local text name
+	local deps text name
 
 	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
 
+	deps=$(SMMS_SERVICE_DEPS apache)
 	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"

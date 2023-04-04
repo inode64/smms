@@ -3,4 +3,4 @@ check process dhcpd with ${pid}
     start program = \"${SMMS_SERVICE_CMD} restart --no-deps ${name}\"
     stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
     if failed host 127.0.0.1 port 67 type udp for 5 cycles then restart
-    depends on dhcpd_bin
+${deps}

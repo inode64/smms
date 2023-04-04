@@ -188,5 +188,9 @@ SMMS_SERVICE_INIT() {
 }
 
 SMMS_SERVICE_DEPS() {
-	echo "depends on php$(getVersion "${name}")_bin"
+	local name
+
+	name="$1"
+
+	echo "    depends on ${name}_bin"
 }

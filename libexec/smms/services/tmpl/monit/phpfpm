@@ -4,4 +4,4 @@ check process ${name} with pidfile ${pid}
     stop  program = \"${SMMS_SERVICE_CMD} stop --no-deps ${name}\"
     if failed unixsocket /run/lock/php$(getVersion "${name}").sock for 3 cycles then restart
     if total memory > {MEM_ALERT} within 15 cycles then restart
-    depends on php$(getVersion "${name}")_bin
+${deps}
