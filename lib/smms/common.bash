@@ -293,9 +293,6 @@ MonitMakeFile() {
 	text="${text//\{MEM_WARNING\}/$(MEM_Warning)}"
 
 	echo -e "${text}"
-	return
-
-	echo "${text}" >"${file}"
 }
 
 CheckTMPL() {
