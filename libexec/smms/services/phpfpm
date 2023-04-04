@@ -81,9 +81,11 @@ phpfpm_service_status() {
 phpfpm_service_monit() {
 	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
 
-	local deps text name pid
+	local deps text name pid service
 
-	name="$(echo ${FUNCNAME} | cut -d_ -f1)$(getVersion "$1")"
+	service="$1"
+
+	name="$(echo ${FUNCNAME} | cut -d_ -f1)$(getVersion "${service}")"
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
