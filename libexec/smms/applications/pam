@@ -10,7 +10,7 @@
 #   Show the list the command line versions to stdout
 #######################################
 pam_application_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	check_program "/lib64/libpam.so.0"
 }
@@ -23,7 +23,7 @@ pam_application_list() {
 #   Show the name of application to stdout
 #######################################
 pam_application_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "Linux-PAM (Pluggable Authentication Modules)"
 }
@@ -36,7 +36,7 @@ pam_application_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 pam_application_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	/sbin/pam_namespace_helper &>/dev/null
 }
@@ -49,7 +49,7 @@ pam_application_status() {
 #   Show the version of application to stdout
 #######################################
 pam_application_version() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "$(getVersion "$(basename "$(smms_readlinkf "$1")")")"
 }
@@ -62,13 +62,13 @@ pam_application_version() {
 #   Show monit code
 #######################################
 pam_application_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_cmd_monit "$1" system
 }
 
 pam_application_lib() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	pam_application_list
 }

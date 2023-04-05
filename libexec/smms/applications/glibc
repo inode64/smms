@@ -10,7 +10,7 @@
 #   Show the list the command line versions to stdout
 #######################################
 glibc_application_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	check_program "ldd"
 }
@@ -23,7 +23,7 @@ glibc_application_list() {
 #   Show the name of application to stdout
 #######################################
 glibc_application_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "GNU libc C library"
 }
@@ -36,7 +36,7 @@ glibc_application_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 glibc_application_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_version "$1" &>/dev/null
 }
@@ -49,7 +49,7 @@ glibc_application_status() {
 #   Show the version of application to stdout
 #######################################
 glibc_application_version() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_version "$1" | head -1
 }
@@ -62,7 +62,7 @@ glibc_application_version() {
 #   Show monit code
 #######################################
 glibc_application_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_cmd_monit "$1" system
 }

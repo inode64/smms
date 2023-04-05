@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 phpfpm_service_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local PHP
 
@@ -24,25 +24,25 @@ phpfpm_service_list() {
 }
 
 phpfpm_service_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "The PHP FastCGI Process Manager"
 }
 
 phpfpm_service_cmd() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	WHICH "php-fpm$(getVersion "$1")"
 }
 
 phpfpm_service_info() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_version "php-fpm$(getVersion "$1")"
 }
 
 phpfpm_service_process() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local pool
 
@@ -57,7 +57,7 @@ phpfpm_service_process() {
 }
 
 phpfpm_service_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	case "$(InitSystem)" in
 	"${SMMS_INIT_OPENRC}")
@@ -79,7 +79,7 @@ phpfpm_service_status() {
 #   Show monit code
 #######################################
 phpfpm_service_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local deps text name pid service
 

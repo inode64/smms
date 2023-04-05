@@ -10,7 +10,7 @@
 #   Show the list the command line versions to stdout
 #######################################
 python_application_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local PYTHON
 
@@ -27,7 +27,7 @@ python_application_list() {
 #   Show the name of application to stdout
 #######################################
 python_application_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "Python language"
 }
@@ -40,7 +40,7 @@ python_application_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 python_application_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_status "$1"
 }
@@ -53,7 +53,7 @@ python_application_status() {
 #   Show the version of application to stdout
 #######################################
 python_application_version() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_version "$1"
 }
@@ -66,7 +66,7 @@ python_application_version() {
 #   Show monit code
 #######################################
 python_application_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_cmd_monit "$1" system "$(basename "$1")"
 }

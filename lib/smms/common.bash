@@ -183,27 +183,29 @@ check_program() {
 }
 
 entry_function() {
-	[[ "${debug:?}" = 'true' ]] && print_info "${1} from ${2}: entering function, parameters: ${*:3}"
+	local args cmd name type
 
-	local name type cmd
-	name=$(echo "${1}" | cut -d_ -f1)
-	type=$(echo "${1}" | cut -d_ -f2)
-	cmd=$(echo "${1}" | cut -d_ -f3)
+	name=$(echo "${FUNCNAME[1]}" | cut -d_ -f1)
+	type=$(echo "${FUNCNAME[1]}" | cut -d_ -f2)
+	cmd=$(echo "${FUNCNAME[1]}" | cut -d_ -f3)
+	args="$1"
+
+	[[ "${debug:?}" = 'true' ]] && print_info "${FUNCNAME[1]} from ${FUNCNAME[2]}: entering function, parameters: ${args}"
 
 	[[ "${type}" != "${SMMS_APPLICATION}" ]] && [[ "${type}" != "${SMMS_SERVICE}" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
 	[[ ! "${cmd}" ]] && Fatal "The name of the function does not comply with the standard ${name}_${type}"
 
 	if [[ "${type}" == "${SMMS_APPLICATION}" ]]; then
 		if [[ "${cmd}" == "status" ]] || [[ "${cmd}" == "version" ]]; then
-			[[ ! "${3}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
-			check_list "${name}" "${type}" "${3}"
+			[[ ! "${args}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
+			check_list "${name}" "${type}" "${args}"
 		fi
 	fi
 
 	if [[ "${type}" == "${SMMS_SERVICE}" ]]; then
 		if [[ "${cmd}" == "info" ]] || [[ "${cmd}" == "process" ]] || [[ "${cmd}" == "status" ]]; then
-			[[ ! "${3}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
-			check_list "${name}" "${type}" "${3}"
+			[[ ! "${args}" ]] && Fatal "The function ${name}_${type}_${cmd} need parameter"
+			check_list "${name}" "${type}" "${args}"
 		fi
 	fi
 }

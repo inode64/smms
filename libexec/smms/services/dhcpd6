@@ -1,38 +1,38 @@
 #!/usr/bin/env bash
 
 dhcpd6_service_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	SMMS_SERVICE_INIT dhcpd6.service dhcpd
 }
 
 # shellcheck disable=SC2120
 dhcpd6_service_cmd() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	dhcpd_application_list
 }
 
 dhcpd6_service_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "DHCPv6 Server Daemon"
 }
 
 dhcpd6_service_info() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_vv "$(dhcpd6_service_cmd)"
 }
 
 dhcpd6_service_process() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	pgrep "$1"
 }
 
 dhcpd6_service_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local mods
 
@@ -62,7 +62,7 @@ dhcpd6_service_status() {
 #   Show monit code
 #######################################
 dhcpd6_service_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local deps text name
 

@@ -10,7 +10,7 @@
 #   Show the list the command line versions to stdout
 #######################################
 php_application_list() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	local PHP
 
@@ -27,7 +27,7 @@ php_application_list() {
 #   Show the name of application to stdout
 #######################################
 php_application_name() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	echo "PHP language"
 }
@@ -40,7 +40,7 @@ php_application_name() {
 #   0 if application in run fine, non-zero application have a problem
 #######################################
 php_application_status() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_status "$1"
 }
@@ -53,7 +53,7 @@ php_application_status() {
 #   Show the version of application to stdout
 #######################################
 php_application_version() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_version "$1" | head -1
 }
@@ -66,7 +66,7 @@ php_application_version() {
 #   Show monit code
 #######################################
 php_application_monit() {
-	entry_function "${FUNCNAME}" "${FUNCNAME[1]}" "$@"
+	entry_function "$@"
 
 	applications_cmd_monit "$1" www "$(basename "$1")"
 }
