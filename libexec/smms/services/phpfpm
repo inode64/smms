@@ -96,7 +96,7 @@ phpfpm_service_monit() {
 		;;
 	esac
 
-	deps=$(SMMS_SERVICE_DEPS "php-fpm$(getVersion "${service}")")
+	deps=$(MonitMakeDeps "php-fpm$(getVersion "${service}")")
 	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"

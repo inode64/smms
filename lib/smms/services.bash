@@ -186,11 +186,3 @@ SMMS_SERVICE_INIT() {
 		;;
 	esac
 }
-
-SMMS_SERVICE_DEPS() {
-	local name
-
-	name="$1"
-
-	echo "    depends on ${name}_bin"
-}

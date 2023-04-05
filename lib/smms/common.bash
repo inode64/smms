@@ -257,6 +257,14 @@ MonitStatus() {
 	$(WHICH monit) status ${1} &>/dev/null
 }
 
+MonitMakeDeps() {
+	local name
+
+	name="$1"
+
+	echo "    depends on ${name}_bin"
+}
+
 MonitMakeFile() {
 	local name type text file
 

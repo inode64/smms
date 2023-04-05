@@ -68,7 +68,7 @@ apache_service_monit() {
 
 	name="$(echo ${FUNCNAME} | cut -d_ -f1)"
 
-	deps=$(SMMS_SERVICE_DEPS apache)
+	deps=$(MonitMakeDeps apache)
 	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"

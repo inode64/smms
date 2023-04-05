@@ -77,7 +77,7 @@ dhcpd6_service_monit() {
 		;;
 	esac
 
-	deps=$(SMMS_SERVICE_DEPS dhcpd)
+	deps=$(MonitMakeDeps dhcpd)
 	text=$(echo -e "$(eval "echo -e \"$(echo -e "$(CheckTMPL "monit")")\" ")")
 
 	MonitMakeFile "${text}"

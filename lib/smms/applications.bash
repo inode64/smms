@@ -42,7 +42,7 @@ check file ${name}_bin with path ${cmd}
 		if [[ $(type -t ${app}_application_lib) == function ]]; then
 			lib="$(${app}_application_list)"
 			if [[ "$lib" ]]; then
-				applications_check_lib "${cmd}" "${lib}" && text="${text}""$(SMMS_SERVICE_DEPS ${app})"
+				applications_check_lib "${cmd}" "${lib}" && text="${text}""$(MonitMakeDeps ${app})"
 			fi
 		fi
 	done
