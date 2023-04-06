@@ -29,7 +29,7 @@ SMMS_SERVICE_EXIXTS() {
 }
 
 SMMS_SERVICE_MAIN() {
-	${1}_service_list | while read -r line; do
+	$1_service_list | while read -r line; do
 		echo "${line}" | grep -q "$2" && echo "${line}" | awk '{print $1}'
 	done
 
@@ -82,7 +82,7 @@ SMMS_SERVICE_CMD() {
 SMMS_SERVICE_LIST() {
 	local s
 
-	for s in $(${1}_service_list); do
+	for s in $($1_service_list); do
 		test "$s" == "$2" && return
 	done
 
@@ -185,4 +185,19 @@ SMMS_SERVICE_INIT() {
 		test -e "${SMMS_SYSTEMD_PATH}/${systemd}" && SMMS_SERVICE_ORDER "${init}" "${systemd} ${openrc}"
 		;;
 	esac
+}
+
+SMMS_SERVICE_WARNING() {
+	local app cmd
+
+	app="$1"
+	cmd="$2"
+
+	if FNExists "${app}_service_warning"; then
+		${app}_service_warning "${cmd}"
+	else
+		[[ "$(${app}_service_info "${cmd}" >/dev/null)" ]] && return 1
+		[[ "$(echo "$(${app}_service_info "${cmd}" 2>/dev/null)" | grep -q "hola")" ]] && retunr 1
+		#echo "$(${app}_service_info "${cmd}" 2>/dev/null)" | grep -q "${SMS_WARNING1}"
+	fi
 }

@@ -21,6 +21,22 @@ declare -r SMMS_MONIT_SRV="${SMMS_MONIT}/services"
 declare -r SMMS_APPLICATION="application"
 declare -r SMMS_SERVICE="service"
 
+# cannot ->, are shown in: ntpupdate, mdadm
+declare -r SMS_WARNING1="cannot \|deprecated\|failed\|linked\|not loaded\|warn:\|warning"
+# Disk fail in smart
+declare -r SMS_ERROR1="BACK UP DATA NOW"
+
+SMS_PIPE_STDERR="$(mktemp -u /tmp/XXXXXX)"
+SMS_PIPE_STDOUT="$(mktemp -u /tmp/XXXXXX)"
+
+declare -r SMS_PIPE_STDERR
+declare -r SMS_PIPE_STDOUT
+
+trap 'rm -f "${SMS_PIPE_STDERR}" "${SMS_PIPE_STDOUT}"' EXIT
+
+mkfifo "${SMS_PIPE_STDERR}"
+mkfifo "${SMS_PIPE_STDOUT}" 2>/dev/null
+
 getDistro() {
 	cat /etc/*-release 2>/dev/null | tr "[:upper:]" "[:lower:]" | grep -Poi '(alpine|arch|centos|debian|gentoo|redhat|suse|ubuntu)' | uniq
 }
@@ -34,7 +50,7 @@ IsRunning() {
 PIDS() {
 	# Remove carriage returns, tabs and multiple spaces
 	# shellcheck disable=SC2005
-	echo "$(pgrep -f "${1}")"
+	echo "$(pgrep -f "$1")"
 }
 
 WHICH() {
@@ -48,7 +64,7 @@ WHICH() {
 	exec=$(which "${exec}" 2>/dev/null)
 
 	if [ ! "${exec}" ]; then
-		exec=$(which "$(basename "${1}")" 2>/dev/null)
+		exec=$(which "$(basename "$1")" 2>/dev/null)
 		if [ "${exec}" ]; then
 			echo "${exec}"
 			return
@@ -65,8 +81,6 @@ IsMounted() {
 
 	dir=$(echo "$1" | sed -e 's: :\\\\\\\\040:g')
 	grep -q "^.* ${dir} " /proc/mounts
-
-	return $?
 }
 
 AddLock() {
@@ -256,7 +270,7 @@ CallFromMonit() {
 MonitStatus() {
 	MonitExits || return 1
 
-	$(WHICH monit) status ${1} &>/dev/null
+	$(WHICH monit) status $1 &>/dev/null
 }
 
 MonitMakeDeps() {
@@ -301,6 +315,10 @@ MonitMakeFile() {
 	text="${text//\{MEM_WARNING\}/$(MEM_Warning)}"
 
 	echo -e "${text}"
+}
+
+FNExists() {
+	[[ $(type -t "$1") == function ]]
 }
 
 CheckTMPL() {

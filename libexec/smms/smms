@@ -8,6 +8,24 @@ source "${SMMS_ROOT}/lib/smms/applications.bash"
 # shellcheck source=./../../lib/smms/services.bash
 source "${SMMS_ROOT}/lib/smms/services.bash"
 
+check_applicacion_warning() {
+	if FNExists "$1_application_warning"; then
+		$1_application_warning || ( echo "Warning" ;  return )
+	fi
+
+	echo "ok"
+}
+
+check_service_warning() {
+	if FNExists "$1_service_warning"; then
+		$1_services_warning "$2" || ( echo "Warning" ;  return )
+	else
+		SMMS_SERVICE_WARNING "$1" "$2"
+	fi
+
+	echo "ok"
+}
+
 check_applicacions() {
 	local app
 
@@ -15,7 +33,7 @@ check_applicacions() {
 		for list in $(${app}_application_list); do
 			echo -n "$(${app}_application_name) | ${list} | $(${app}_application_version "${list}") | status "
 			if $(${app}_application_status "${list}"); then
-				echo "ok"
+				check_applicacion_warning
 			else
 				echo "fail"
 			fi
@@ -31,7 +49,7 @@ check_all_services() {
 			list=$(echo "${line}" | awk '{print $1}')
 			echo -n "$(${service}_service_name) | ${list} | $(${service}_service_info "${list}") | status "
 			if ${service}_service_status "${list}"; then
-				echo "ok"
+				check_service_warning "${service}" "${list}"
 			else
 				echo "fail"
 			fi
