@@ -10,7 +10,10 @@ source "${SMMS_ROOT}/lib/smms/services.bash"
 
 check_applicacion_warning() {
 	if FNExists "$1_application_warning"; then
-		$1_application_warning || ( echo "Warning" ;  return )
+		$1_application_warning || (
+			echo "Warning"
+			return
+		)
 	fi
 
 	echo "ok"
@@ -18,7 +21,10 @@ check_applicacion_warning() {
 
 check_service_warning() {
 	if FNExists "$1_service_warning"; then
-		$1_services_warning "$2" || ( echo "Warning" ;  return )
+		$1_services_warning "$2" || (
+			echo "Warning"
+			return
+		)
 	else
 		SMMS_SERVICE_WARNING "$1" "$2"
 	fi
