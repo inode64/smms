@@ -42,9 +42,7 @@ getDistro() {
 }
 
 IsRunning() {
-	pgrep -c "$1" 2>/dev/null
-
-	return $?
+	pgrep -c "$1" &>/dev/null
 }
 
 PIDS() {
